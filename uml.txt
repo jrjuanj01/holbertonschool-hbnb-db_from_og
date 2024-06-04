@@ -1,0 +1,74 @@
++------------------+
+|      Place       |
++------------------+
+| - id             |
+| - name           |
+| - description    |
+| - address        |
+| - city_id        |
+| - latitude       |
+| - longitude      |
+| - host_id        |
+| - num_rooms      |
+| - num_bathrooms  |
+| - price_per_night|
+| - max_guests     |
+| - amenities      |
+| - created_at     |
+| - updated_at     |
++------------------+
+          ^
+          |
++------------------+
+|      User        |
++------------------+
+| - id             |
+| - email          |
+| - password       |
+| - first_name     |
+| - last_name      |
+| - created_at     |
+| - updated_at     |
++------------------+
+          |
+          v
++------------------+
+|     Review       |
++------------------+
+| - id             |
+| - place_id       |
+| - user_id        |
+| - text           |
+| - rating         |
+| - created_at     |
+| - updated_at     |
++------------------+
+          |
+          v
++------------------+
+|    Amenity       |
++------------------+
+| - id             |
+| - name           |
+| - created_at     |
+| - updated_at     |
++------------------+
+          |
+          v
++------------------+
+|    Country       |
++------------------+
+| - id             |
+| - name           |
++------------------+
+          |
+          v
++------------------+
+|     City         |
++------------------+
+| - id             |
+| - name           |
+| - country_id     |
+| - created_at     |
+| - updated_at     |
++------------------+
