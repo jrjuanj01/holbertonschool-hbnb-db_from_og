@@ -4,7 +4,7 @@ from datetime import datetime
 
 class City:
     """class that defines a city"""
-    def __init__(self, name):
+    def __init__(self, name:str):
         """initialize a city"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")

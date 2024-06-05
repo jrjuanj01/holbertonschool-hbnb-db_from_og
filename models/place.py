@@ -7,11 +7,13 @@ from .review import Review
 class Place:
     """class that defines a place"""
 
-    def __init__(self, name, description, address, latitude, longitude,
-                 city_id, rooms, bathrooms, price, max_guests):
+    def __init__(self, name:str, description:str, address:str, latitude:float,
+                 longitude:float, city_id, rooms:int, bathrooms:int,
+                 price:int, max_guests:int):
         """initialize a place"""
         self.__id = str(uuid.uuid4())
         self.__host_id = None
+        self.__host = None
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.created_at
         self.__name = name
@@ -58,6 +60,17 @@ class Place:
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
+    def host(self):
+        """host getter"""
+        return self.__host
+
+    @host.setter
+    def host(self, host):
+        """host setter"""
+        self.__host = host
+        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+
+    @property
     def created_at(self):
         """creation datetime getter"""
         return self.__created_at
@@ -73,7 +86,7 @@ class Place:
         return self.__name
 
     @name.setter
-    def name(self, name):
+    def name(self, name:str):
         """name setter"""
         if not name or len(name.strip()) == 0:
             raise ValueError("name cannot be empty")
@@ -86,7 +99,7 @@ class Place:
         return self.__description
 
     @description.setter
-    def description(self, description):
+    def description(self, description:str):
         """description setter"""
         if not description or len(description.strip()) == 0:
             raise ValueError("description cannot be empty")
@@ -99,7 +112,7 @@ class Place:
         return self.__address
 
     @address.setter
-    def address(self, address):
+    def address(self, address:str):
         """address setter"""
         if not address or len(address.strip()) == 0:
             raise ValueError("address cannot be empty")
@@ -112,7 +125,7 @@ class Place:
         return self.__latitude
 
     @latitude.setter
-    def latitude(self, latitude):
+    def latitude(self, latitude:float):
         """latitude setter"""
         if type(latitude) is not float:
             raise TypeError("latitude must be a float")
@@ -127,7 +140,7 @@ class Place:
         return self.__longitude
 
     @longitude.setter
-    def longitude(self, longitude):
+    def longitude(self, longitude:float):
         """longitude setter"""
         if type(longitude) is not float:
             raise TypeError("longitude must be a float")
@@ -155,7 +168,7 @@ class Place:
         return self.__rooms
 
     @rooms.setter
-    def rooms(self, rooms):
+    def rooms(self, rooms:int):
         """rooms setter"""
         if type(rooms) is not int:
             raise TypeError("number of rooms must be an integer")
@@ -170,7 +183,7 @@ class Place:
         return self.__bathrooms
 
     @bathrooms.setter
-    def bathrooms(self, bathrooms):
+    def bathrooms(self, bathrooms:int):
         """bathrooms setter"""
         if type(bathrooms) is not int:
             raise TypeError("number of bathrooms must be a valid integer")
@@ -185,7 +198,7 @@ class Place:
         return self.__price
 
     @price.setter
-    def price(self, price):
+    def price(self, price:int):
         """price setter"""
         if type(price) is not int:
             raise TypeError("price must be a valid integer")
@@ -200,7 +213,7 @@ class Place:
         return self.__max_guests
 
     @max_guests.setter
-    def max_guests(self, max_guests):
+    def max_guests(self, max_guests:int):
         """maxguests setter"""
         if type(max_guests) is not int:
             raise TypeError("max guests must be a valid integer")

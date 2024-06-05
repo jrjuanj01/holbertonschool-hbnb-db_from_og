@@ -7,7 +7,7 @@ from .review import Review
 class User:
     """class that defines a user"""
 
-    def __init__(self, first_name, last_name, email, password):
+    def __init__(self, first_name:str, last_name:str, email:str, password:str):
         """initialize a user"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
@@ -25,6 +25,7 @@ class User:
             raise ValueError("place must be a Place instance")
         self.places.append(place)
         place.host_id = self.__id
+        place.host = self.__first_name + " " + self.__last_name
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     def add_review(self, review):
