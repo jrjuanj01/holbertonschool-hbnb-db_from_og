@@ -1,8 +1,18 @@
+from .city import City
+
+
 class Country:
     """class that defines a country"""
     def __init__(self, name):
         """initialize a country"""
         self.__name = name
+        self.cities = []
+
+    def add_city(self, city):
+        """add a city to the country"""
+        if not isinstance(city, City):
+            raise TypeError("city must be an instance of City")
+        self.cities.append(city)
 
     @property
     def name(self):

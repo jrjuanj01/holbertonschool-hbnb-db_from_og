@@ -4,12 +4,13 @@ from datetime import datetime
 
 class City:
     """class that defines a city"""
-    def __init__(self, name:str):
+    def __init__(self, name: str):
         """initialize a city"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.__created_at
         self.__name = name
+        self.__country = None
 
     @property
     def id(self):
@@ -39,4 +40,15 @@ class City:
         if not name or len(name.strip()) == 0:
             raise ValueError("name cannot be empty")
         self.__name = name
+        self.updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+
+    @property
+    def country(self):
+        """country getter"""
+        return self.__country
+
+    @country.setter
+    def country(self, country):
+        """country setter"""
+        self.__country = country
         self.updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")

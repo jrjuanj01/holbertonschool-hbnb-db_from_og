@@ -6,18 +6,23 @@ from .review import Review
 
 class User:
     """class that defines a user"""
+    emails = []  # list of existing email addresses
 
-    def __init__(self, first_name:str, last_name:str, email:str, password:str):
+    def __init__(self, first_name: str, last_name: str,
+                 email: str, password: str):
         """initialize a user"""
+        if email in User.emails:  # handle unique email
+            raise ValueError("email not available")
+        User.emails.append(email)
+        self.__email = email
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.created_at
         self.__first_name = first_name
         self.__last_name = last_name
-        self.__email = email
         self.__password = password
-        self.places = []
-        self.reviews = []
+        self.places = []  # list of places owned by the user
+        self.reviews = []  # list of reviews done by the user
 
     def add_place(self, place):
         """add place to user places"""
@@ -33,6 +38,7 @@ class User:
         if not isinstance(review, Review):
             raise ValueError("review must be a Review instance")
         self.reviews.append(review)
+        review.user_name = self.__first_name + " " + self.__last_name
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property

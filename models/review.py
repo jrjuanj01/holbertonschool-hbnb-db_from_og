@@ -10,6 +10,7 @@ class Review:
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.__created_at
         self.__user_id = user_id
+        self.__user_name = None
         self.__place_id = place_id
         self.__text = text
 
@@ -32,6 +33,17 @@ class Review:
     def user_id(self):
         """user id getter"""
         return self.__user_id
+
+    @property
+    def user_name(self):
+        """user name getter"""
+        return self.__user_name
+
+    @user_name.setter
+    def user_name(self, user_name):
+        """user name setter"""
+        self.__user_name = user_name
+        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
     def place_id(self):

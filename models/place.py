@@ -7,9 +7,9 @@ from .review import Review
 class Place:
     """class that defines a place"""
 
-    def __init__(self, name:str, description:str, address:str, latitude:float,
-                 longitude:float, city_id, rooms:int, bathrooms:int,
-                 price:int, max_guests:int):
+    def __init__(self, name: str, description: str, address: str,
+                 latitude: float, longitude: float, city_id, rooms: int,
+                 bathrooms: int, price: int, max_guests: int):
         """initialize a place"""
         self.__id = str(uuid.uuid4())
         self.__host_id = None
@@ -86,7 +86,7 @@ class Place:
         return self.__name
 
     @name.setter
-    def name(self, name:str):
+    def name(self, name):
         """name setter"""
         if not name or len(name.strip()) == 0:
             raise ValueError("name cannot be empty")
@@ -99,7 +99,7 @@ class Place:
         return self.__description
 
     @description.setter
-    def description(self, description:str):
+    def description(self, description):
         """description setter"""
         if not description or len(description.strip()) == 0:
             raise ValueError("description cannot be empty")
@@ -112,7 +112,7 @@ class Place:
         return self.__address
 
     @address.setter
-    def address(self, address:str):
+    def address(self, address):
         """address setter"""
         if not address or len(address.strip()) == 0:
             raise ValueError("address cannot be empty")
@@ -125,7 +125,7 @@ class Place:
         return self.__latitude
 
     @latitude.setter
-    def latitude(self, latitude:float):
+    def latitude(self, latitude):
         """latitude setter"""
         if type(latitude) is not float:
             raise TypeError("latitude must be a float")
@@ -140,7 +140,7 @@ class Place:
         return self.__longitude
 
     @longitude.setter
-    def longitude(self, longitude:float):
+    def longitude(self, longitude):
         """longitude setter"""
         if type(longitude) is not float:
             raise TypeError("longitude must be a float")
@@ -168,7 +168,7 @@ class Place:
         return self.__rooms
 
     @rooms.setter
-    def rooms(self, rooms:int):
+    def rooms(self, rooms):
         """rooms setter"""
         if type(rooms) is not int:
             raise TypeError("number of rooms must be an integer")
@@ -183,7 +183,7 @@ class Place:
         return self.__bathrooms
 
     @bathrooms.setter
-    def bathrooms(self, bathrooms:int):
+    def bathrooms(self, bathrooms):
         """bathrooms setter"""
         if type(bathrooms) is not int:
             raise TypeError("number of bathrooms must be a valid integer")
@@ -198,7 +198,7 @@ class Place:
         return self.__price
 
     @price.setter
-    def price(self, price:int):
+    def price(self, price):
         """price setter"""
         if type(price) is not int:
             raise TypeError("price must be a valid integer")
@@ -213,7 +213,7 @@ class Place:
         return self.__max_guests
 
     @max_guests.setter
-    def max_guests(self, max_guests:int):
+    def max_guests(self, max_guests):
         """maxguests setter"""
         if type(max_guests) is not int:
             raise TypeError("max guests must be a valid integer")
