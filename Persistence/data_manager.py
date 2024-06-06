@@ -11,27 +11,43 @@ class DataManager(IPersistenceManager):
                         "Country": {}, "Amenity": {}
                         }
 
-    def get(self, data_id, data_type):
-        """get data"""
-        return self.storage[data_type].get(data_id)
+    def get(self, identifier, data_type):
+        """get data with identifier. (name for country and id for others)"""
+        if data_type not in self.storage:
+            raise ValueError(f"Unsupported data type: {data_type}")
+        return self.storage[data_type].get(identifier)
 
     def save(self, data):
         """save a data"""
         data_type = type(data).__name__
-        # handle country cause it has no id
-        self.storage[data_type][data.id] = data
+        if data_type not in self.storage:
+            raise ValueError(f"Unsupported data type: {data_type}")
+        if data_type == "Country":
+            self.storage["Country"][data.name] = data
+        else:
+            self.storage[data_type][data.id] = data
 
     def update(self, data):
         """update data"""
         data_type = type(data).__name__
-        if data.id in self.storage[data_type]:
-            self.storage[data_type][data.id] = data
+        if data_type not in self.storage:
+            raise ValueError(f"Unsupported data type: {data_type}")
+        if data_type == "Country":
+            if data.name in self.storage["Country"]:
+                self.storage["Country"][data.name] = data
+            else:
+                raise ValueError(f"Country '{data.name}' does not exist")
         else:
-            raise ValueError(f"{data_type} with id {data.id} does not exist")
+            if data.id in self.storage[data_type]:
+                self.storage[data_type][data.id] = data
+            else:
+                raise ValueError(f"{data_type} with id '{data.id}' does not exist")
 
-    def delete(self, data_id, data_type):
-        """delete data"""
-        if data_id in self.storage[data_type]:
-            del self.storage[data_type][data_id]
+    def delete(self, identifier, data_type):
+        """delete data with identifier. (name for country and id for others)"""
+        if data_type not in self.storage:
+            raise ValueError(f"Unsupported data type: {data_type}")
+        if identifier in self.storage[data_type]:
+            del self.storage[data_type][identifier]
         else:
-            raise ValueError(f"{data_type} with id {data_id} does not exist")
+            raise ValueError(f"{data_type} with identifier '{identifier}' does not exist")
