@@ -3,8 +3,12 @@ from .city import City
 
 class Country:
     """class that defines a country"""
+    countries = []  # list of existing countries
+
     def __init__(self, name):
         """initialize a country"""
+        if name in Country.countries:
+            raise ValueError("country already defined")
         self.__name = name
         self.cities = []
 
