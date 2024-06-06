@@ -39,4 +39,4 @@ class Amenity:
         if not name or len(name.strip()) == 0:
             raise ValueError("name cannot be empty")
         self.__name = name
-        self.updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")

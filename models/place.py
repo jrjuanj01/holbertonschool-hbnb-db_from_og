@@ -26,8 +26,8 @@ class Place:
         self.__bathrooms = bathrooms
         self.__price = price
         self.__max_guests = max_guests
-        self.amenities = []
-        self.reviews = []
+        self.amenities = []  # list of amenities belonging to this place
+        self.reviews = []  # list of reviews belonging to this place
 
     def add_amenity(self, amenity):
         """adds amenity to place amenities"""
