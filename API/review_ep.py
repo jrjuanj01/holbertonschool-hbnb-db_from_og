@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request, abort
-from models import Review
+from models.review import Review
 
 
-review_bp = Blueprint("review", "review")
+review_bp = Blueprint("review", __name__)
 
 
 @review_bp.route("/places/<place_id>/reviews", methods=["POST"])
@@ -13,18 +13,6 @@ def create_review(place_id):
     user_id = request.json[user_id]
     text = request.json["text"]
     return jsonify(Review.create(place_id, user_id, text)), 201
-
-
-@review_bp.route("/users/<user_id>/reviews", methods=["GET"])
-def get_reviews(user_id):
-    """get all reviews"""
-    return jsonify(Review.all(user_id)), 200
-
-
-@review_bp.route("/places/<place_id>/reviews", methods=["GET"])
-def get_review(place_id):
-    """get a review"""
-    return jsonify(Review.get(place_id)), 200
 
 
 @review_bp.route("/review/<review_id>", methods=["GET"])

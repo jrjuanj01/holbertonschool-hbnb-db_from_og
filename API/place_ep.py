@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
-from models import Place
+from models.place import Place, Review
 
-place_bp = Blueprint("place", "place")
+place_bp = Blueprint("place", __name__)
 
 
 @place_bp.route("/places", methods=["POST"])
@@ -36,3 +36,9 @@ def update_place(place_id, user_id):
 def delete_place(place_id):
     """delete a place"""
     return jsonify(Place.delete(place_id)), 204
+
+
+@place_bp.route("/places/<place_id>/reviews", methods=["GET"])
+def get_review(place_id):
+    """get a review"""
+    return jsonify(Review.get(place_id)), 200

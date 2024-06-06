@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
-from models import Amenity
+from models.amenity import Amenity
 
-ammenities_bp = Blueprint("ammenity", "ammenity")
+ammenities_bp = Blueprint("ammenity", __name__)
 
 
 @ammenities_bp.route("/ammenities", methods=["POST"])
@@ -19,7 +19,7 @@ def get_ammenities():
     return jsonify(Amenity.all()), 200
 
 
-@ammenities_bp.route("/ammenities/<ammenity.id>", methods=["GET"])
+@ammenities_bp.route("/ammenities/<ammenity_id>", methods=["GET"])
 def get_ammenity(ammenity_id):
     """get specific ammenity information"""
     return jsonify(Amenity.get(ammenity_id)), 200

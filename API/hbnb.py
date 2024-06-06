@@ -6,7 +6,6 @@ from cc_ep import cc_bp
 from ammenities import ammenities_bp
 
 
-
 app = Flask("HBnB")
 
 

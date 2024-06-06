@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify, request, abort
-from models import Country, City
+from models.country import Country
+from models.city import City
 
-cc_bp = Blueprint("cc", "cc")
+
+cc_bp = Blueprint("cc", __name__)
 
 
 @cc_bp.route("/countries", methods=["GET"])
@@ -20,8 +22,8 @@ def get_country(country_code):
     return jsonify(country), 200
 
 
-@cc_bp.route("/countries/<country_code>/cities", methode=["GET"])
-def get_cities(country_code):
+@cc_bp.route("/countries/<country_code>/cities", methods=["GET"])
+def get_cities_in_country(country_code):
     """get all cities for a specific country"""
     country = Country.query.filter_by(country_code=country_code).first()
     if not country:
@@ -42,7 +44,7 @@ def create_city(country_code):
     return jsonify(city), 200
 
 
-@cc_bp.route("/cities", method=["GET"])
+@cc_bp.route("/cities", methods=["GET"])
 def get_cities():
     """get all cities"""
     cities = City.query.all()
