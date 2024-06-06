@@ -1,4 +1,4 @@
-from flask import Blueprint, jasonify, request, abort
+from flask import Blueprint, jsonify, request, abort
 from models import Country, City
 
 cc_bp = Blueprint("cc", "cc")
@@ -8,7 +8,7 @@ cc_bp = Blueprint("cc", "cc")
 def get_countries():
     """get all countries""" 
     countries = Country.query.all()
-    return jasonify(countries), 200
+    return jsonify(countries), 200
 
 
 @cc_bp.route("/countries/<country_code>", methods=["GET"])
@@ -17,7 +17,7 @@ def get_country(country_code):
     country = Country.query.filter_by(country_code=country_code).first()
     if not country:
         abort(404)
-    return jasonify(country), 200
+    return jsonify(country), 200
 
 
 @cc_bp.route("/countries/<country_code>/cities", methode=["GET"])
@@ -26,7 +26,7 @@ def get_cities(country_code):
     country = Country.query.filter_by(country_code=country_code).first()
     if not country:
         abort(404)
-    return jasonify(country.cities), 200
+    return jsonify(country.cities), 200
 
 
 @cc_bp.route("/cities", methods=["POST"])
@@ -39,14 +39,14 @@ def create_city(country_code):
         name=request.json.get("name"),
         country_code=country_code
     )
-    return jasonify(city), 200
+    return jsonify(city), 200
 
 
 @cc_bp.route("/cities", method=["GET"])
 def get_cities():
     """get all cities"""
     cities = City.query.all()
-    return jasonify(cities), 200
+    return jsonify(cities), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["GET"])
@@ -55,7 +55,7 @@ def get_city(city_id):
     city = City.query.filter_by(city_id=city_id).first()
     if not city:
         abort(404)
-    return jasonify(city), 200
+    return jsonify(city), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["PUT"])
@@ -66,7 +66,7 @@ def update_city(city_id):
         abort(400)
     city.name = request.json.get("name", city.name)
     city.country_code = request.json.get("country_code", city.country_code)
-    return jasonify(city), 200
+    return jsonify(city), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["DELETE"])
@@ -75,4 +75,4 @@ def delete_city(city_id):
     city = City.query.filter_by(city_id=city_id).first()
     if not city:
         abort(404)
-    return jasonify(city), 204
+    return jsonify(city), 204

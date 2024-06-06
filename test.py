@@ -42,7 +42,7 @@ def main():
     rancho.add_amenity(wifi)
 
     # Create a review
-    review = Review(user_id=juanjo.id, place_id=rancho.id, text="Bello!")
+    review = Review(user_id=juanjo.id, place_id=rancho.id, text="Bello!", rating=4)
 
     # Add the review to the place
     rancho.add_review(review)
@@ -56,7 +56,7 @@ def main():
     print(f"ID: {charlie.id}, Owns: {charlie.places[0].name}")
     print(f"Place: {rancho.name}, Host ID: {rancho.host_id}, Host Name: {rancho.host}")
     print(f"Amenity: {rancho.amenities[0].name}")
-    print(f"{rancho.reviews[0].user_name} said: {rancho.reviews[0].text}")
+    print(f"{rancho.reviews[0].user_name} said: {rancho.reviews[0].text}, {rancho.reviews[0].rating}/5")
 
 
 if __name__ == "__main__":
