@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Review:
     """class that defines a review"""
-    def __init__(self, user_id, place_id, text):
+    def __init__(self, user_id, place_id, text, rating: int):
         """initialize a review"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
@@ -13,6 +13,7 @@ class Review:
         self.__user_name = None
         self.__place_id = place_id
         self.__text = text
+        self.__rating = rating
 
     @property
     def id(self):
@@ -62,4 +63,18 @@ class Review:
             raise TypeError("text must be a valid string")
         if not text or len(text.strip()) == 0:
             raise ValueError("text cannot be empty")
+        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+
+    @property
+    def rating(self):
+        """rating getter"""
+        return self.__rating
+    
+    @rating.setter
+    def rating(self, rating):
+        """rating setter"""
+        if type(rating) is not int:
+            raise TypeError("rating must be an integer")
+        if rating < 0 or rating > 5:
+            raise ValueError("rating must be between 0 and 5")
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
