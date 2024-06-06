@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Amenity:
     """class that defines an amenity"""
-    def __init__(self, name):
+    def __init__(self, name: str):
         """initialize an amenity"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")

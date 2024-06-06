@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Review:
     """class that defines a review"""
-    def __init__(self, user_id, place_id, text, rating: int):
+    def __init__(self, user_id: str, place_id: str, text: str, rating: int):
         """initialize a review"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
@@ -41,7 +41,7 @@ class Review:
         return self.__user_name
 
     @user_name.setter
-    def user_name(self, user_name):
+    def user_name(self, user_name: str):
         """user name setter"""
         self.__user_name = user_name
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
@@ -57,7 +57,7 @@ class Review:
         return self.__text
 
     @text.setter
-    def text(self, text):
+    def text(self, text: str):
         """text setter"""
         if type(text) is not str:
             raise TypeError("text must be a valid string")
@@ -71,7 +71,7 @@ class Review:
         return self.__rating
     
     @rating.setter
-    def rating(self, rating):
+    def rating(self, rating: int):
         """rating setter"""
         if type(rating) is not int:
             raise TypeError("rating must be an integer")
