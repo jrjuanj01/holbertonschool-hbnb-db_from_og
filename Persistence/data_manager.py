@@ -41,7 +41,7 @@ class DataManager(IPersistenceManager):
             if data.id in self.storage[data_type]:
                 self.storage[data_type][data.id] = data
             else:
-                raise ValueError(f"{data_type} with id '{data.id}' does not exist")
+                raise ValueError(f"{data_type} '{data.id}' does not exist")
 
     def delete(self, identifier, data_type):
         """delete data with identifier. (name for country and id for others)"""
@@ -50,4 +50,4 @@ class DataManager(IPersistenceManager):
         if identifier in self.storage[data_type]:
             del self.storage[data_type][identifier]
         else:
-            raise ValueError(f"{data_type} with identifier '{identifier}' does not exist")
+            raise ValueError(f"{data_type} '{identifier}' does not exist")
