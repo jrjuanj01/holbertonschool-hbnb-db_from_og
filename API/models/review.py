@@ -1,9 +1,12 @@
 import uuid
 from datetime import datetime
+from ...Persistence.data_manager import DataManager
 
 
 class Review:
     """class that defines a review"""
+    data_manager = DataManager()
+
     def __init__(self, user_id: str, place_id: str, text: str, rating: int):
         """initialize a review"""
         self.__id = str(uuid.uuid4())
@@ -69,7 +72,7 @@ class Review:
     def rating(self):
         """rating getter"""
         return self.__rating
-    
+
     @rating.setter
     def rating(self, rating: int):
         """rating setter"""
@@ -78,3 +81,23 @@ class Review:
         if rating < 0 or rating > 5:
             raise ValueError("rating must be between 0 and 5")
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+
+    @classmethod
+    def create(cls, user_id, place_id, rating, text):
+        """create new review"""
+        review = cls(user_id, place_id, rating, text)
+        cls.data_manager.save(review)
+        return review
+
+    @classmethod
+    def get(cls, review_id):
+        """get review by id"""
+        return cls.data_manager.get(review_id, "Review")
+
+    def update(self):
+        """update review data"""
+        self.data_manager.update(self)
+
+    def delete(self):
+        """delete review data"""
+        self.data_manager.delete(self.id, "Review")

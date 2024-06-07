@@ -2,11 +2,13 @@ import uuid
 from datetime import datetime
 from .place import Place
 from .review import Review
+from ...Persistence.data_manager import DataManager
 
 
 class User:
     """class that defines a user"""
     emails = []  # list of existing email addresses
+    data_manager = DataManager()
 
     def __init__(self, first_name: str, last_name: str,
                  email: str, password: str):
@@ -115,3 +117,23 @@ class User:
             raise ValueError("password cannot be empty")
         self.__password = password
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+
+    @classmethod
+    def create(cls, first_name, last_name, email, password):
+        """create new user"""
+        user = cls(first_name, last_name, email, password)
+        cls.data_manager.save(user)
+        return user
+
+    @classmethod
+    def get(cls, user_id):
+        """get user by id"""
+        return cls.data_manager.get(user_id, "User")
+
+    def update(self):
+        """update user data"""
+        self.data_manager.update(self)
+
+    def delete(self):
+        """delete user data"""
+        self.data_manager.delete(self.id, "User")

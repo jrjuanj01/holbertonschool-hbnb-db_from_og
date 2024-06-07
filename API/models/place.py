@@ -2,10 +2,12 @@ import uuid
 from datetime import datetime
 from .amenity import Amenity
 from .review import Review
+from ...Persistence.data_manager import DataManager
 
 
 class Place:
     """class that defines a place"""
+    data_manager = DataManager()
 
     def __init__(self, name: str, description: str, address: str,
                  latitude: float, longitude: float, city_id, rooms: int,
@@ -221,3 +223,23 @@ class Place:
             raise ValueError("max guests must be atleast 1 guest")
         self.__max_guests = max_guests
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
+
+    @classmethod
+    def create(cls, name, description, location):
+        """Create a new place"""
+        place = cls(name, description, location)
+        cls.data_manager.save(place)
+        return place
+
+    @classmethod
+    def get(cls, place_id):
+        """Get a specific place by ID"""
+        return cls.data_manager.get(place_id, "Place")
+
+    def update(self):
+        """Update place data"""
+        self.data_manager.update(self)
+
+    def delete(self):
+        """Delete place"""
+        self.data_manager.delete(self.id, "Place")
