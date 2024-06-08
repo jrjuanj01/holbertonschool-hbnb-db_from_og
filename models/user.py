@@ -137,3 +137,30 @@ class User:
     def delete(self):
         """delete user data"""
         self.data_manager.delete(self.id, "User")
+
+    def to_dict(self):
+        """convert user to dict. Serialization"""
+        return {
+            "id": self.__id,
+            "first_name": self.__first_name,
+            "last_name": self.__last_name,
+            "email": self.__email,
+            "password": self.__password,
+            "created_at": self.__created_at,
+            "updated_at": self.__updated_at,
+            "places": [place.to_dict() for place in self.places],
+            "reviews": [review.to_dict() for review in self.reviews],
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        """convert dict to user. Deserialization"""
+        user = cls(
+            data["first_name"], data["last_name"],
+            data["email"], data["password"])
+        user.__id = data["id"]
+        user.__created_at = data["created_at"]
+        user.__updated_at = data["updated_at"]
+        user.places = [Place.from_dict(place) for place in data["places"]]
+        user.reviews = [Review.from_dict(review) for review in data["reviews"]]
+        return user
