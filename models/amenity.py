@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from ...Persistence.data_manager import DataManager
+from ..Persistence.data_manager import DataManager
 
 
 class Amenity:

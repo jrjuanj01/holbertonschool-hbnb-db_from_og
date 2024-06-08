@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from .amenity import Amenity
 from .review import Review
-from ...Persistence.data_manager import DataManager
+from ..Persistence.data_manager import DataManager
 
 
 class Place:
