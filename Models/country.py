@@ -51,3 +51,8 @@ class Country:
     def delete(self):
         """Delete country"""
         self.data_manager.delete(self.__name, "Country")
+
+    @classmethod
+    def all(cls):
+        """Retrieve all countries"""
+        return cls.data_manager.all("Country")

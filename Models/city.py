@@ -75,3 +75,8 @@ class City:
     def delete(self):
         """Delete city"""
         self.data_manager.delete(self.id, "City")
+
+    @classmethod
+    def all(cls):
+        """Retrieve all cities"""
+        return cls.data_manager.all("City")

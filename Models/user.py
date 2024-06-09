@@ -137,3 +137,8 @@ class User:
     def delete(self):
         """delete user data"""
         self.data_manager.delete(self.id, "User")
+
+    @classmethod
+    def all(cls):
+        """Retrieve all users"""
+        return cls.data_manager.all("User")

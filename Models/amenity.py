@@ -63,3 +63,8 @@ class Amenity:
     def delete(self):
         """Delete amenity"""
         self.data_manager.delete(self.id, "Amenity")
+
+    @classmethod
+    def all(cls):
+        """retrieve all amenities"""
+        return cls.data_manager.all("Amenity")

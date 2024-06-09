@@ -243,3 +243,8 @@ class Place:
     def delete(self):
         """Delete place"""
         self.data_manager.delete(self.id, "Place")
+
+    @classmethod
+    def all(cls):
+        """retrieve all places"""
+        return cls.data_manager.all("Place")
