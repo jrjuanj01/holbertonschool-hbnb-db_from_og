@@ -21,13 +21,13 @@ def get_users():
     return jsonify(User.all()), 200
 
 
-@user_bp.route(f"/users/<user_id>", methods=["GET"])
+@user_bp.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
     """get a user"""
     return jsonify(User.get(user_id)), 200
 
 
-@user_bp.route(f"/users/<user_id>", methods=["PUT"])
+@user_bp.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
     """update a user"""
     if "email" not in request.json or "password" not in request.json:
@@ -37,7 +37,7 @@ def update_user(user_id):
     return jsonify(User.update(user_id, email, password)), 200
 
 
-@user_bp.route(f"/users/<user_id>", methods=["DELETE"])
+@user_bp.route("/users/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
     """delete a user"""
     return jsonify(User.delete(user_id)), 204
