@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, abort
-from models.place import Place, Review
+from Models.place import Place, Review
 
 place_bp = Blueprint("place", __name__)
 
@@ -9,7 +9,6 @@ def create_place(user_id):
     """create a place"""
     if user_id not in request.json:
         abort(400)
-    
 
 
 @place_bp.route("/places", methods=["GET"])
@@ -29,8 +28,7 @@ def update_place(place_id, user_id):
     """update a place"""
     if user_id not in request.json:
         abort(400)
-    
-    
+
 
 @place_bp.route("/places/<place_id>", methods=["DELETE"])
 def delete_place(place_id):

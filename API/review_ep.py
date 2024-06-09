@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, abort
-from models.review import Review
+from Models.review import Review
 
 
 review_bp = Blueprint("review", __name__)

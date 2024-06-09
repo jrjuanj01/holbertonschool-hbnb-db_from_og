@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
-from models.country import Country
-from models.city import City
+from Models.country import Country
+from Models.city import City
 
 
 cc_bp = Blueprint("cc", __name__)
@@ -8,7 +8,7 @@ cc_bp = Blueprint("cc", __name__)
 
 @cc_bp.route("/countries", methods=["GET"])
 def get_countries():
-    """get all countries""" 
+    """get all countries"""
     countries = Country.query.all()
     return jsonify(countries), 200
 

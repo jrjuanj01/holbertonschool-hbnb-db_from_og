@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, abort
-from models.amenity import Amenity
+from Models.amenity import Amenity
 
 amenity_bp = Blueprint("amenity", __name__)
 
