@@ -51,3 +51,9 @@ class DataManager(IPersistenceManager):
             del self.storage[data_type][identifier]
         else:
             raise ValueError(f"{data_type} '{identifier}' does not exist")
+
+    def all(self, data_type):
+        """retrieve all data of a certain type"""
+        if data_type not in self.storage:
+            raise ValueError(f"Unsupported data type: {data_type}")
+        return list(self.storage[data_type].values())
