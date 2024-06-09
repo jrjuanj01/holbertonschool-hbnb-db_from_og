@@ -101,29 +101,3 @@ class Review:
     def delete(self):
         """delete review data"""
         self.data_manager.delete(self.id, "Review")
-
-    def to_dict(self):
-        """convert review to dict. Serialization"""
-        return {
-            "id": self.__id,
-            "created_at": self.__created_at,
-            "updated_at": self.__updated_at,
-            "user_id": self.__user_id,
-            "user_name": self.__user_name,
-            "place_id": self.__place_id,
-            "text": self.__text,
-            "rating": self.__rating,
-        }
-
-    @classmethod
-    def from_dict(cls, data):
-        """convert dict to review. Deserializaton"""
-        review = cls(
-            data["user_id"], data["place_id"],
-            data["rating"], data["text"],
-        )
-        review.__id = data["id"]
-        review.__created_at = data["created_at"]
-        review.__updated_at = data["updated_at"]
-        review.__user_name = data["user_name"]
-        return review
