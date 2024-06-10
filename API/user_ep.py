@@ -44,6 +44,6 @@ def delete_user(user_id):
 
 
 @user_bp.route("/users/<user_id>/reviews", methods=["GET"])
-def get_review(user_id):
+def get_reviews(user_id):
     """get all reviews"""
     return jsonify(Review.all(user_id)), 200
