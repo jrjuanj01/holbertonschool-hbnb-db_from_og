@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request, abort
 from Models.user import User
 from Models.review import Review
 
-
 user_bp = Blueprint("user", __name__)
 
 
