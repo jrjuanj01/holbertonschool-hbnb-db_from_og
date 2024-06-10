@@ -1,5 +1,5 @@
 from .city import City
-from ..Persistence.data_manager import DataManager
+from Persistence.data_manager import DataManager
 
 
 class Country:

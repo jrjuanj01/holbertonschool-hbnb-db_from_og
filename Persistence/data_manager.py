@@ -1,4 +1,4 @@
-from persistence_interface import IPersistenceManager
+from .persistence_interface import IPersistenceManager
 
 
 class DataManager(IPersistenceManager):
