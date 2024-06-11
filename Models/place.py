@@ -248,3 +248,25 @@ class Place:
     def all(cls):
         """retrieve all places"""
         return cls.data_manager.all("Place")
+
+    def to_dict(self):
+        """convert place to dict"""
+        return {
+            "id": self.__id,
+            "host_id": self.__host_id,
+            "host": self.__host,
+            "created_at": self.__created_at,
+            "updated_at": self.__updated_at,
+            "name": self.__name,
+            "description": self.__description,
+            "address": self.__address,
+            "latitude": self.__latitude,
+            "longitude": self.__longitude,
+            "city_id": self.__city_id,
+            "rooms": self.__rooms,
+            "bathrooms": self.__bathrooms,
+            "price": self.__price,
+            "max_guests": self.__max_guests,
+            "amenities": [amenity.to_dict() for amenity in self.amenities],
+            "reviews": [review.to_dict() for review in self.reviews],
+        }

@@ -40,4 +40,6 @@ def delete_place(place_id):
 @place_bp.route("/places/<place_id>/reviews", methods=["GET"])
 def get_reviews(place_id):
     """get all reviews"""
-    return jsonify(Review.all(place_id)), 200
+    reviews = [review for review in Review.data_manager.all("Review")
+               if review.place_id == place_id]
+    return jsonify(reviews), 200
