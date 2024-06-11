@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from Models.review import Review
+from Models.place import Place
 
 
 review_bp = Blueprint("review", __name__)
@@ -10,32 +11,41 @@ def create_review(place_id):
     """create a review"""
     if "place_id" not in request.json:
         abort(404, description="Place not found")
-    if "user_id" not in request.json or "text" not in request.json:
-        abort(400, description="Missing user_id or text")
+    if "user_id" not in request.json:
+        abort(400, description="Missing User_id")
+    if "text" not in request.json or "rating" not in request.json:
+        abort(400, description="Missing review")
+    place_id = place_id
     user_id = request.json["user_id"]
+    place = Place.get(place_id)
+    if user_id == place.user_id:
+        abort(400, description="User cannot review their own place")
     text = request.json["text"]
-    return jsonify(Review.create(place_id, user_id, text)), 201
+    rating = request.json["rating"]
+    return jsonify(Review.create(user_id, place_id, rating, text)), 201
 
 
 @review_bp.route("/review/<review_id>", methods=["GET"])
 def get_review(review_id):
     """get a review"""
+    if "review_id" not in Review.get(review_id):
+        abort(404, description="Review not found")
     review = Review.get(review_id)
-    if not review:
-        abort(404)
     return jsonify(review), 200
 
 
 @review_bp.route("/review/<review_id>", methods=["PUT"])
 def update_review(review_id):
     """update a review"""
-    if "user_id" not in request.json or "text" not in request.json:
-        abort(400, description="Missing user_id or text")
-    user_id = request.json["user_id"]
+    if "review_id"  not in Review.get(review_id):
+        abort(404, description="Review not found")
+    if "text" not in request.json or "rating" not in request.json:
+        abort(400, description="Missing review")
+    review = Review.get(review_id)
     text = request.json["text"]
-    review = Review.update(review_id, user_id, text)
-    if not review:
-        abort(404)
+    rating = request.json["rating"]
+    review.text = text
+    review.rating = rating
     return jsonify(review), 200
 
 
