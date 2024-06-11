@@ -104,5 +104,5 @@ class Review:
 
     @classmethod
     def all(cls):
-        """retrieve all reviews"""
+        """Retrieve all users"""
         return cls.data_manager.all("Review")
