@@ -31,11 +31,17 @@ def get_user(user_id):
 @user_bp.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
     """update a user"""
+    user = User.get(user_id)
+    if not user:
+        abort(404)
     if "email" not in request.json or "password" not in request.json:
         abort(400)
     email = request.json["email"]
     password = request.json["password"]
-    return jsonify(User.update(user_id, email, password)), 200
+    user.email = email
+    user.password = password
+    user.update()
+    return jsonify(user), 200
 
 
 @user_bp.route("/users/<user_id>", methods=["DELETE"])
@@ -46,5 +52,7 @@ def delete_user(user_id):
 
 @user_bp.route("/users/<user_id>/reviews", methods=["GET"])
 def get_reviews(user_id):
-    """get all reviews"""
-    return jsonify(Review.all(user_id)), 200
+    """get all reviews for a user"""
+    reviews = [review for review in Review.data_manager.all("Review")
+               if review.user_id == user_id]
+    return jsonify(reviews), 200
