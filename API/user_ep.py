@@ -35,16 +35,21 @@ def update_user(user_id):
         abort(400)
     email = request.json["email"]
     password = request.json["password"]
+    #Check in database for already existing users
+        # abort(404, description="User not found")
     return jsonify(User.update(user_id, email, password)), 200
 
 
 @user_bp.route("/users/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
     """delete a user"""
+    #Check in database for already existing users
+        # abort(404, description="User not found")
     return jsonify(User.delete(user_id)), 204
 
 
 @user_bp.route("/users/<user_id>/reviews", methods=["GET"])
 def get_reviews(user_id):
     """get all reviews"""
+    #if user has not authored any reviews /not found
     return jsonify(Review.all(user_id)), 200
