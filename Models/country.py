@@ -56,3 +56,10 @@ class Country:
     def all(cls):
         """Retrieve all countries"""
         return cls.data_manager.all("Country")
+
+    def to_dict(self):
+        """Return a dictionary representation of the country"""
+        return {
+            "name": self.__name,
+            "cities": [city.to_dict() for city in self.cities]
+        }

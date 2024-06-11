@@ -106,3 +106,16 @@ class Review:
     def all(cls):
         """Retrieve all users"""
         return cls.data_manager.all("Review")
+
+    def to_dict(self):
+        """convert review to dict"""
+        return {
+            "id": self.__id,
+            "created_at": self.__created_at,
+            "updated_at": self.__updated_at,
+            "user_id": self.__user_id,
+            "user_name": self.__user_name,
+            "place_id": self.__place_id,
+            "text": self.__text,
+            "rating": self.__rating,
+        }

@@ -128,7 +128,8 @@ class User:
     @classmethod
     def get(cls, user_id):
         """get user by id"""
-        return cls.data_manager.get(user_id, "User")
+        user = cls.data_manager.get(user_id, "User")
+        return (user)
 
     def update(self):
         """update user data"""
@@ -136,9 +137,24 @@ class User:
 
     def delete(self):
         """delete user data"""
+        User.emails.remove(self.__email)
         self.data_manager.delete(self.id, "User")
 
     @classmethod
     def all(cls):
         """Retrieve all users"""
         return cls.data_manager.all("User")
+
+    def to_dict(self):
+        """convert user to dict"""
+        return {
+            "id": self.__id,
+            "first_name": self.__first_name,
+            "last_name": self.__last_name,
+            "email": self.__email,
+            "password": self.__password,
+            "created_at": self.__created_at,
+            "updated_at": self.__updated_at,
+            "places": [place.to_dict() for place in self.places],
+            "reviews": [review.to_dict() for review in self.reviews],
+        }
