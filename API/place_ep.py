@@ -64,7 +64,8 @@ def update_place(place_id):
         if user is None:
             abort(404, description="User not found")
         prev_host = User.get(place.host_id)
-        prev_host.places.remove(place)
+        if prev_host is not None:
+            prev_host.places.remove(place)
         place.host_id = data["host_id"]
         user.add_place(place)
     if "amenities" in data:
