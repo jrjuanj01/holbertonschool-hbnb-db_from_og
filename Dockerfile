@@ -1,4 +1,6 @@
-FROM alpine:latest
+FROM python:3.9-alpine
+
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
@@ -6,6 +8,10 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 5210:8080
+ENV PORT=5000
 
-CMD ["python3", "HBnB_App.py"]
+EXPOSE $PORT
+
+VOLUME ["app/data"]
+
+CMD ["sh", "-c", "gunicorn --bind localhost:$PORT HBnB_App:app"]
