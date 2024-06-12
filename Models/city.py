@@ -7,13 +7,13 @@ class City:
     """class that defines a city"""
     data_manager = DataManager()
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, country_code):
         """initialize a city"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.__created_at
         self.__name = name
-        self.__country = None
+        self.__country_code = country_code
 
     @property
     def id(self):
@@ -46,20 +46,20 @@ class City:
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
-    def country(self):
+    def country_code(self):
         """country getter"""
-        return self.__country
+        return self.__country_code
 
-    @country.setter
-    def country(self, country):
+    @country_code.setter
+    def country_code(self, country_code):
         """country setter"""
-        self.__country = country
+        self.__country_code = country_code
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @classmethod
-    def create(cls, name):
+    def create(cls, name, country_code):
         """Create a new city"""
-        city = cls(name)
+        city = cls(name, country_code)
         cls.data_manager.save(city)
         return city
 
@@ -88,5 +88,5 @@ class City:
             "created_at": self.__created_at,
             "updated_at": self.__updated_at,
             "name": self.__name,
-            "country_id": self.__country.id
+            "country_code": self.__country_code
         }
