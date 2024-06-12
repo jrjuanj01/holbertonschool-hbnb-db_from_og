@@ -82,7 +82,7 @@ def update_city(city_id):
     if "country_code" in data:
         city.country_code = data["country_code"]
     city.update()
-    return jsonify(city.to_dict()), 200
+    return jsonify(city.to_dict()), 201
 
 
 @cc_bp.route("/cities/<city_id>", methods=["DELETE"])
