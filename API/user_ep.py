@@ -1,13 +1,12 @@
 from flask import Blueprint, jsonify, request, abort
 from Models.user import User
-from Models.review import Review
 
 user_bp = Blueprint("user", __name__)
 
 
 @user_bp.route("/users", methods=["POST"])
 def create_user():
-    """create a user"""
+    """Create a new user"""
     data = request.json
     if data is None:
         abort(400, description="No data provided (must be JSON)")
@@ -24,7 +23,7 @@ def create_user():
 
 @user_bp.route("/users", methods=["GET"])
 def get_users():
-    """get all users"""
+    """Retrieve a list of all users"""
     users = User.all()
     if not users:
         abort(404, description="No users found")
@@ -34,7 +33,7 @@ def get_users():
 
 @user_bp.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
-    """get a user"""
+    """Retrieve details of a specific user"""
     user = User.get(user_id)
     if user is None:
         abort(404, description="User not found")
@@ -43,7 +42,7 @@ def get_user(user_id):
 
 @user_bp.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
-    """update a user"""
+    """Update an existing user"""
     user = User.get(user_id)
     if user is None:
         abort(404, description="User not found")
@@ -59,27 +58,14 @@ def update_user(user_id):
     if "last_name" in data:
         user.last_name = data["last_name"]
     user.update()
-    return jsonify(user.to_dict()), 200
+    return jsonify(user.to_dict()), 201
 
 
 @user_bp.route("/users/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
-    """delete a user"""
+    """Delete a user"""
     user = User.get(user_id)
     if user is None:
         abort(404, description="User not found")
     user.delete()
     return "User deleted", 204
-
-
-@user_bp.route("/users/<user_id>/reviews", methods=["GET"])
-def get_reviews(user_id):
-    """get all reviews for a user"""
-    reviews = Review.all()
-    if not reviews:
-        abort(404, description="No reviews found")
-    user_reviews = [review.to_dict() for review in reviews
-                    if review.user_id == user_id]
-    if not user_reviews:
-        abort(404, description="User has no reviews")
-    return jsonify(user_reviews), 200
