@@ -8,73 +8,88 @@ cc_bp = Blueprint("cc", __name__)
 
 @cc_bp.route("/countries", methods=["GET"])
 def get_countries():
-    """get all countries"""
-    countries = Country.query.all()
+    """Retrieve all pre-loaded countries"""
+    countries = Country.all()
     return jsonify(countries), 200
 
 
 @cc_bp.route("/countries/<country_code>", methods=["GET"])
 def get_country(country_code):
-    """get specific country information"""
-    country = Country.query.filter_by(country_code=country_code).first()
-    if not country:
-        abort(404)
+    """Retrieve details of a specific country by its code"""
+    country = Country.get(country_code)
+    if country is None:
+        abort(404, description="Country not found")
     return jsonify(country), 200
 
 
 @cc_bp.route("/countries/<country_code>/cities", methods=["GET"])
 def get_cities_in_country(country_code):
-    """get all cities for a specific country"""
-    country = Country.query.filter_by(country_code=country_code).first()
+    """Retrieve all cities belonging to a specific country"""
+    country = Country.get(country_code)
     if not country:
-        abort(404)
-    return jsonify(country.cities), 200
+        abort(404, description="Country not found")
+    cities = [city.to_dict() for city in City.all()
+              if city.country_code == country_code]
+    return jsonify(cities), 200
 
 
 @cc_bp.route("/cities", methods=["POST"])
-def create_city(country_code):
-    """create a city"""
-    country = Country.query.filter_by(country_code=country_code).first()
-    if not country:
-        abort(404)
-    city = City(
-        name=request.json.get("name"),
-        country_code=country_code
-    )
-    return jsonify(city), 200
+def create_city():
+    """Create a new city"""
+    data = request.json
+    if data is None:
+        abort(400, description="No data provided (must be JSON)")
+    fields = ["name", "country_code"]
+    for field in fields:
+        if field not in data:
+            abort(400, description=f"Missing {field}")
+    city = City.create(data["name"], data["country_code"])
+    return jsonify(city.to_dict()), 200
 
 
 @cc_bp.route("/cities", methods=["GET"])
 def get_cities():
-    """get all cities"""
-    cities = City.query.all()
-    return jsonify(cities), 200
+    """Retrieve all cities"""
+    cities = City.all()
+    if cities is None:
+        abort(404, description="No cities found")
+    cities_data = [city.to_dict() for city in cities]
+    if cities_data is None:
+        abort(404, description="No cities found")
+    return jsonify(cities_data), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["GET"])
 def get_city(city_id):
-    """get specific city information"""
-    city = City.query.filter_by(city_id=city_id).first()
-    if not city:
-        abort(404)
-    return jsonify(city), 200
+    """Retrieve details of a specific city"""
+    city = City.get(city_id)
+    if city is None:
+        abort(404, description="City not found")
+    return jsonify(city.to_dict()), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["PUT"])
 def update_city(city_id):
-    """update a city"""
-    city = City.query.filter_by(city_id=city_id).first()
-    if not city:
-        abort(400)
-    city.name = request.json.get("name", city.name)
-    city.country_code = request.json.get("country_code", city.country_code)
-    return jsonify(city), 200
+    """Update an existing city"""
+    city = City.get(city_id)
+    if city is None:
+        abort(400, description="City not found")
+    data = request.json
+    if data is None:
+        abort(400, description="No data provided (must be JSON)")
+    if "name" in data:
+        city.name = data["name"]
+    if "country_code" in data:
+        city.country_code = data["country_code"]
+    city.update()
+    return jsonify(city.to_dict()), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["DELETE"])
 def delete_city(city_id):
-    """delete a city"""
-    city = City.query.filter_by(city_id=city_id).first()
-    if not city:
-        abort(404)
-    return jsonify(city), 204
+    """Celete a city"""
+    city = City.get(city_id)
+    if city is None:
+        abort(400, description="City not found")
+    city.delete()
+    return "City deleted", 204
