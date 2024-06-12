@@ -6,9 +6,8 @@ class DataManager(IPersistenceManager):
     def __init__(self):
         """initialize a data manager"""
         self.storage = {
-                        "User": {}, "Place": {},
-                        "Review": {}, "City": {},
-                        "Country": {}, "Amenity": {}
+                        "User": {}, "Place": {}, "Review": {},
+                        "City": {}, "Amenity": {}
                         }
 
     def get(self, identifier, data_type):
@@ -22,26 +21,17 @@ class DataManager(IPersistenceManager):
         data_type = type(data).__name__
         if data_type not in self.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        if data_type == "Country":
-            self.storage["Country"][data.name] = data
-        else:
-            self.storage[data_type][data.id] = data
+        self.storage[data_type][data.id] = data
 
     def update(self, data):
         """update data"""
         data_type = type(data).__name__
         if data_type not in self.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        if data_type == "Country":
-            if data.name in self.storage["Country"]:
-                self.storage["Country"][data.name] = data
-            else:
-                raise ValueError(f"Country '{data.name}' does not exist")
+        if data.id in self.storage[data_type]:
+            self.storage[data_type][data.id] = data
         else:
-            if data.id in self.storage[data_type]:
-                self.storage[data_type][data.id] = data
-            else:
-                raise ValueError(f"{data_type} '{data.id}' does not exist")
+            raise ValueError(f"{data_type} '{data.id}' does not exist")
 
     def delete(self, identifier, data_type):
         """delete data with identifier. (name for country and id for others)"""
