@@ -14,10 +14,9 @@ class Place:
                  bathrooms: int, price: int, max_guests: int):
         """initialize a place"""
         self.__id = str(uuid.uuid4())
-        self.__host_id = None
-        self.__host = None
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.created_at
+        self.__host_id = None
         self.__name = name
         self.__description = description
         self.__address = address
@@ -59,17 +58,6 @@ class Place:
     def host_id(self, host_id):
         """host id setter"""
         self.__host_id = host_id
-        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
-
-    @property
-    def host(self):
-        """host getter"""
-        return self.__host
-
-    @host.setter
-    def host(self, host):
-        """host setter"""
-        self.__host = host
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
@@ -225,9 +213,11 @@ class Place:
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @classmethod
-    def create(cls, name, description, location):
+    def create(cls, name, description, address, city_id, latitude, longitude,
+               rooms, bathrooms, price, max_guests):
         """Create a new place"""
-        place = cls(name, description, location)
+        place = cls(name, description, address, city_id, latitude, longitude,
+                    rooms, bathrooms, price, max_guests)
         cls.data_manager.save(place)
         return place
 
