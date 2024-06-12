@@ -7,15 +7,14 @@ class Review:
     """class that defines a review"""
     data_manager = DataManager()
 
-    def __init__(self, user_id: str, place_id: str, text: str, rating: int):
+    def __init__(self, user_id: str, place_id, comment: str, rating: int):
         """initialize a review"""
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.__created_at
         self.__user_id = user_id
-        self.__user_name = None
         self.__place_id = place_id
-        self.__text = text
+        self.__comment = comment
         self.__rating = rating
 
     @property
@@ -39,33 +38,22 @@ class Review:
         return self.__user_id
 
     @property
-    def user_name(self):
-        """user name getter"""
-        return self.__user_name
-
-    @user_name.setter
-    def user_name(self, user_name: str):
-        """user name setter"""
-        self.__user_name = user_name
-        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
-
-    @property
     def place_id(self):
         """place id getter"""
         return self.__place_id
 
     @property
-    def text(self):
-        """text getter"""
-        return self.__text
+    def comment(self):
+        """comment getter"""
+        return self.__comment
 
-    @text.setter
-    def text(self, text: str):
-        """text setter"""
-        if type(text) is not str:
-            raise TypeError("text must be a valid string")
-        if not text or len(text.strip()) == 0:
-            raise ValueError("text cannot be empty")
+    @comment.setter
+    def comment(self, comment: str):
+        """comment setter"""
+        if type(comment) is not str:
+            raise TypeError("comment must be a valid string")
+        if not comment or len(comment.strip()) == 0:
+            raise ValueError("comment cannot be empty")
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
@@ -78,14 +66,14 @@ class Review:
         """rating setter"""
         if type(rating) is not int:
             raise TypeError("rating must be an integer")
-        if rating < 0 or rating > 5:
-            raise ValueError("rating must be between 0 and 5")
+        if rating < 1 or rating > 5:
+            raise ValueError("rating must be between 1 and 5")
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @classmethod
-    def create(cls, user_id, place_id, rating, text):
+    def create(cls, user_id, place_id, rating, comment):
         """create new review"""
-        review = cls(user_id, place_id, rating, text)
+        review = cls(user_id, place_id, rating, comment)
         cls.data_manager.save(review)
         return review
 
@@ -116,6 +104,6 @@ class Review:
             "user_id": self.__user_id,
             "user_name": self.__user_name,
             "place_id": self.__place_id,
-            "text": self.__text,
+            "comment": self.__comment,
             "rating": self.__rating,
         }
