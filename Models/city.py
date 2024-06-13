@@ -60,7 +60,7 @@ class City:
     def create(cls, name, country_code):
         """Create a new city"""
         city = cls(name, country_code)
-        cls.data_manager.save(city)
+        cls.data_manager.save(city.id, "City", city.to_dict())
         return city
 
     @classmethod
@@ -70,7 +70,7 @@ class City:
 
     def update(self):
         """Update city data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "City", self.to_dict())
 
     def delete(self):
         """Delete city"""

@@ -74,7 +74,7 @@ class Review:
     def create(cls, user_id, place_id, rating, comment):
         """create new review"""
         review = cls(user_id, place_id, rating, comment)
-        cls.data_manager.save(review)
+        cls.data_manager.save(review.id, "Review", review.to_dict())
         return review
 
     @classmethod
@@ -84,7 +84,7 @@ class Review:
 
     def update(self):
         """update review data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "Review", self.to_dict())
 
     def delete(self):
         """delete review data"""

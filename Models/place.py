@@ -218,7 +218,7 @@ class Place:
         """Create a new place"""
         place = cls(name, description, address, city_id, latitude, longitude,
                     rooms, bathrooms, price, max_guests)
-        cls.data_manager.save(place)
+        cls.data_manager.save(place.id, "Place", place.to_dict())
         return place
 
     @classmethod
@@ -228,7 +228,7 @@ class Place:
 
     def update(self):
         """Update place data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "Place", self.to_dict())
 
     def delete(self):
         """Delete place"""

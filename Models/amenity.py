@@ -48,7 +48,7 @@ class Amenity:
     def create(cls, name):
         """Create a new amenity"""
         amenity = cls(name)
-        cls.data_manager.save(amenity)
+        cls.data_manager.save(amenity.id, "Amenity", amenity.to_dict())
         return amenity
 
     @classmethod
@@ -58,7 +58,7 @@ class Amenity:
 
     def update(self):
         """Update amenity data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "Amenity", self.to_dict())
 
     def delete(self):
         """Delete amenity"""

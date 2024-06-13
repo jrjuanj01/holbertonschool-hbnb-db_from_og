@@ -119,7 +119,7 @@ class User:
     def create(cls, first_name, last_name, email, password):
         """Create new user"""
         user = cls(first_name, last_name, email, password)
-        cls.data_manager.save(user)
+        cls.data_manager.save(user.id, "User", user.to_dict())
         return user
 
     @classmethod
@@ -130,7 +130,7 @@ class User:
 
     def update(self):
         """Update user data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "User", self.to_dict())
 
     def delete(self):
         """Delete user data"""
