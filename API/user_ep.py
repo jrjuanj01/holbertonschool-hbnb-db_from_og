@@ -16,34 +16,35 @@ def create_user():
             abort(400, description=f"Missing {field}")
     if data["email"] in User.emails:
         abort(400, description="Email already exists")
-    user = User.create(data["first_name"], data["last_name"],
-                       data["email"], data["password"])
+    user = User(data["first_name"], data["last_name"],
+                data["email"], data["password"])
+    user.save(user.id, "User", user)
     return jsonify(user.to_dict()), 201
 
 
 @user_bp.route("/users", methods=["GET"])
 def get_users():
     """Retrieve a list of all users"""
-    users = User.all()
+    users = User.all("User")
     if not users:
         abort(404, description="No users found")
-    data = [user.to_dict() for user in users]
+    data = [user for user in users]
     return jsonify(data), 200
 
 
 @user_bp.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
     """Retrieve details of a specific user"""
-    user = User.get(user_id)
+    user = User.reload(user_id, "User")
     if user is None:
         abort(404, description="User not found")
-    return jsonify(user.to_dict()), 200
+    return jsonify(user), 200
 
 
 @user_bp.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
     """Update an existing user"""
-    user = User.get(user_id)
+    user = User.get(user_id, "User")
     if user is None:
         abort(404, description="User not found")
     data = request.json
@@ -57,15 +58,15 @@ def update_user(user_id):
         user.first_name = data["first_name"]
     if "last_name" in data:
         user.last_name = data["last_name"]
-    user.update()
+    user.update(user.id, "User", user)
     return jsonify(user.to_dict()), 201
 
 
 @user_bp.route("/users/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
     """Delete a user"""
-    user = User.get(user_id)
+    user = User.get(user_id, "User")
     if user is None:
         abort(404, description="User not found")
-    user.delete()
+    user.delete(user.id, "User")
     return "User deleted", 204
