@@ -14,10 +14,9 @@ class Place:
                  bathrooms: int, price: int, max_guests: int):
         """initialize a place"""
         self.__id = str(uuid.uuid4())
-        self.__host_id = None
-        self.__host = None
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.created_at
+        self.__host_id = None
         self.__name = name
         self.__description = description
         self.__address = address
@@ -59,17 +58,6 @@ class Place:
     def host_id(self, host_id):
         """host id setter"""
         self.__host_id = host_id
-        self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
-
-    @property
-    def host(self):
-        """host getter"""
-        return self.__host
-
-    @host.setter
-    def host(self, host):
-        """host setter"""
-        self.__host = host
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
@@ -225,10 +213,12 @@ class Place:
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @classmethod
-    def create(cls, name, description, location):
+    def create(cls, name, description, address, city_id, latitude, longitude,
+               rooms, bathrooms, price, max_guests):
         """Create a new place"""
-        place = cls(name, description, location)
-        cls.data_manager.save(place)
+        place = cls(name, description, address, city_id, latitude, longitude,
+                    rooms, bathrooms, price, max_guests)
+        cls.data_manager.save(place.id, "Place", place.to_dict())
         return place
 
     @classmethod
@@ -238,7 +228,7 @@ class Place:
 
     def update(self):
         """Update place data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "Place", self.to_dict())
 
     def delete(self):
         """Delete place"""
@@ -248,3 +238,25 @@ class Place:
     def all(cls):
         """retrieve all places"""
         return cls.data_manager.all("Place")
+
+    def to_dict(self):
+        """convert place to dict"""
+        return {
+            "id": self.__id,
+            "host_id": self.__host_id,
+            "host": self.__host,
+            "created_at": self.__created_at,
+            "updated_at": self.__updated_at,
+            "name": self.__name,
+            "description": self.__description,
+            "address": self.__address,
+            "latitude": self.__latitude,
+            "longitude": self.__longitude,
+            "city_id": self.__city_id,
+            "rooms": self.__rooms,
+            "bathrooms": self.__bathrooms,
+            "price": self.__price,
+            "max_guests": self.__max_guests,
+            "amenities": [amenity.to_dict() for amenity in self.amenities],
+            "reviews": [review.to_dict() for review in self.reviews],
+        }

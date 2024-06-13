@@ -1,0 +1,77 @@
+curl -X POST http://localhost:5000/users -H "Content-Type: application/json" -d '{
+  "email": "testuser@example.com",
+  "password": "password123",
+  "first_name": "Test",
+  "last_name": "User"
+}'
+
+curl -X GET http://localhost:5000/users
+
+curl -X GET http://localhost:5000/users/<user_id>
+
+curl -X PUT http://localhost:5000/users/<user_id> -H "Content-Type: application/json" -d '{
+  "email": "updateduser@example.com",
+  "password": "newpassword123",
+  "first_name": "Updated",
+  "last_name": "User"
+}'
+
+curl -X DELETE http://localhost:5000/users/<user_id>
+
+curl -X GET http://localhost:5000/users/<user_id>/reviews
+
+curl -X POST http://localhost:5000/reviews -H "Content-Type: application/json" -d '{
+  "user_id": "<user_id>",
+  "place_id": "<place_id>",
+  "rating": 4,
+  "comment": "This is a review."
+}'
+
+curl -X GET http://localhost:5000/reviews
+
+curl -X POST http://localhost:5000/amenities -H "Content-Type: application/json" -d '{
+  "name": "Pool"
+}'
+
+curl -X POST http://localhost:5000/amenities -H "Content-Type: application/json" -d '{
+  "name": "WiFi"
+}'
+
+curl -X GET http://localhost:5000/amenities
+
+curl -X GET http://localhost:5000/amenities/<amenity_id>
+
+curl -X PUT http://localhost:5000/amenities/<amenity_id> -H "Content-Type: application/json" -d '{
+  "name": "Updated Pool"
+}'
+
+curl -X DELETE http://localhost:5000/amenities/<amenity_id>
+
+curl -X POST http://localhost:5000/places -H "Content-Type: application/json" -d '{
+  "name": "Cozy Cottage",
+  "description": "A cozy cottage in the woods.",
+  "city_id": "<city_id>",
+  "address": "somewhere in the woods",
+  "latitude": 45.87,
+  "longitude": 98.76,
+  "rooms": 3,
+  "bathrooms": 2,
+  "host_id": "<user_id>",
+  "price": 100,
+  "max_guest": 6,
+  "amenities": [Pool]
+}'
+
+curl -X GET http://localhost:5000/places
+
+curl -X GET http://localhost:5000/places/<place_id>
+
+curl -X PUT http://localhost:5000/places/<place_id> -H "Content-Type: application/json" -d '{
+  "name": "Updated Cozy Cottage",
+  "description": "An updated cozy cottage in the woods.",
+  "price": 120,
+  "amenities": [Pool, WiFi]
+}'
+
+curl -X DELETE http://localhost:5000/places/<place_id>
+

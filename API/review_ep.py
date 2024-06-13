@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
 from Models.review import Review
 from Models.place import Place
+from Models.user import User
 
 
 review_bp = Blueprint("review", __name__)
@@ -8,50 +9,81 @@ review_bp = Blueprint("review", __name__)
 
 @review_bp.route("/places/<place_id>/reviews", methods=["POST"])
 def create_review(place_id):
-    """create a review"""
-    if "place_id" not in request.json:
-        abort(404, description="Place not found")
-    if "user_id" not in request.json:
-        abort(400, description="Missing User_id")
-    if "text" not in request.json or "rating" not in request.json:
-        abort(400, description="Missing review")
-    place_id = place_id
-    user_id = request.json["user_id"]
+    """Create a new review for a specified place"""
     place = Place.get(place_id)
-    if user_id == place.user_id:
-        abort(400, description="User cannot review their own place")
-    text = request.json["text"]
-    rating = request.json["rating"]
-    return jsonify(Review.create(user_id, place_id, rating, text)), 201
+    if place is None:
+        abort(404, description="Place not found")
+    data = request.json
+    if data is None:
+        abort(400, description="No data provided (must be JSON)")
+    fields = ["user_id", "rating", "comment"]
+    for field in fields:
+        if field not in data:
+            abort(400, description=f"Missing {field}")
+    user = User.get(data["user_id"])
+    if user is None:
+        abort(404, description="User not found")
+    if user.id == place.host_id:
+        abort(400, description="Host user cannot review their own place")
+    review = Review.create(data["user_id"], place_id,
+                           data["rating"], data["comment"])
+    place.add_review(review)
+    user.add_review(review)
+    return jsonify(review.to_dict()), 201
 
 
 @review_bp.route("/review/<review_id>", methods=["GET"])
 def get_review(review_id):
-    """get a review"""
-    if "review_id" not in Review.get(review_id):
-        abort(404, description="Review not found")
+    """Retrieve detailed information about a specific review"""
     review = Review.get(review_id)
-    return jsonify(review), 200
+    if review is None:
+        abort(404, description="Review not found")
+    return jsonify(review.to_dict()), 200
 
 
 @review_bp.route("/review/<review_id>", methods=["PUT"])
 def update_review(review_id):
-    """update a review"""
-    if "review_id"  not in Review.get(review_id):
-        abort(404, description="Review not found")
-    if "text" not in request.json or "rating" not in request.json:
-        abort(400, description="Missing review")
+    """Update an existing review"""
     review = Review.get(review_id)
-    text = request.json["text"]
+    if review is None:
+        abort(404, description="Review not found")
+    comment = request.json["comment"]
     rating = request.json["rating"]
-    review.text = text
+    review.comment = comment
     review.rating = rating
-    return jsonify(review), 200
+    review.update()
+    return jsonify(review.to_dict()), 201
 
 
 @review_bp.route("/review/<review_id>", methods=["DELETE"])
 def delete_review(review_id):
-    """delete a review"""
-    if not Review.delete(review_id):
-        abort(404)
-    return jsonify({}), 204
+    """Delete a review"""
+    review = Review.get(review_id)
+    if review is None:
+        abort(404, description="Review not found")
+    review.delete()
+    return "Review deleted", 204
+
+
+@review_bp.route("/places/<place_id>/reviews", methods=["GET"])
+def get_place_reviews(place_id):
+    """Retrieve all reviews for a specific place"""
+    place = Place.get(place_id)
+    if place is None:
+        abort(404, description="Place not found")
+    if place.reviews is None:
+        abort(404, description="Place has no reviews")
+    place_reviews = [review.to_dict() for review in place.reviews]
+    return jsonify(place_reviews), 200
+
+
+@review_bp.route("/users/<user_id>/reviews", methods=["GET"])
+def get_user_reviews(user_id):
+    """Retrieve all reviews written by a specific user"""
+    user = User.get(user_id)
+    if user is None:
+        abort(404, description="User not found")
+    if user.reviews is None:
+        abort(404, description="User has no reviews")
+    user_reviews = [review.to_dict() for review in user.reviews]
+    return jsonify(user_reviews), 200

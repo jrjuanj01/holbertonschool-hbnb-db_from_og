@@ -48,7 +48,7 @@ class Amenity:
     def create(cls, name):
         """Create a new amenity"""
         amenity = cls(name)
-        cls.data_manager.save(amenity)
+        cls.data_manager.save(amenity.id, "Amenity", amenity.to_dict())
         return amenity
 
     @classmethod
@@ -58,7 +58,7 @@ class Amenity:
 
     def update(self):
         """Update amenity data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "Amenity", self.to_dict())
 
     def delete(self):
         """Delete amenity"""
@@ -68,3 +68,12 @@ class Amenity:
     def all(cls):
         """retrieve all amenities"""
         return cls.data_manager.all("Amenity")
+
+    def to_dict(self):
+        """Return a dictionary representation of an amenity"""
+        return {
+            "id": self.__id,
+            "created_at": self.__created_at,
+            "updated_at": self.__updated_at,
+            "name": self.__name,
+        }
