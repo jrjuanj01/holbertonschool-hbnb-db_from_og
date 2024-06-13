@@ -1,5 +1,2 @@
-flask
-requests
-jsonify
-abort
-uuid
+Flask==3.0.3
+Gunicorn==20.1.0
