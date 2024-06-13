@@ -5,8 +5,13 @@ from Persistence.data_manager import DataManager
 
 class Amenity(DataManager):
     """class that defines an amenity"""
+    amenities = []  # list of existing amenities
+
     def __init__(self, name: str):
         """initialize an amenity"""
+        if name in Amenity.amenities:
+            raise ValueError("Amenity already exists")
+        Amenity.amenities.append(name)
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.__created_at
