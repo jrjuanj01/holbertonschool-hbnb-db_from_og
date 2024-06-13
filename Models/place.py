@@ -5,10 +5,8 @@ from .review import Review
 from Persistence.data_manager import DataManager
 
 
-class Place:
+class Place(DataManager):
     """class that defines a place"""
-    data_manager = DataManager()
-
     def __init__(self, name: str, description: str, address: str,
                  latitude: float, longitude: float, city_id, rooms: int,
                  bathrooms: int, price: int, max_guests: int):
@@ -212,39 +210,11 @@ class Place:
         self.__max_guests = max_guests
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
-    @classmethod
-    def create(cls, name, description, address, city_id, latitude, longitude,
-               rooms, bathrooms, price, max_guests):
-        """Create a new place"""
-        place = cls(name, description, address, city_id, latitude, longitude,
-                    rooms, bathrooms, price, max_guests)
-        cls.data_manager.save(place.id, "Place", place.to_dict())
-        return place
-
-    @classmethod
-    def get(cls, place_id):
-        """Get a specific place by ID"""
-        return cls.data_manager.get(place_id, "Place")
-
-    def update(self):
-        """Update place data"""
-        self.data_manager.update(self.id, "Place", self.to_dict())
-
-    def delete(self):
-        """Delete place"""
-        self.data_manager.delete(self.id, "Place")
-
-    @classmethod
-    def all(cls):
-        """retrieve all places"""
-        return cls.data_manager.all("Place")
-
     def to_dict(self):
         """convert place to dict"""
         return {
             "id": self.__id,
             "host_id": self.__host_id,
-            "host": self.__host,
             "created_at": self.__created_at,
             "updated_at": self.__updated_at,
             "name": self.__name,

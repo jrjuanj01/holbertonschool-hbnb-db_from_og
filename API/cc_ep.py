@@ -43,17 +43,18 @@ def create_city():
     for field in fields:
         if field not in data:
             abort(400, description=f"Missing {field}")
-    city = City.create(data["name"], data["country_code"])
+    city = City(data["name"], data["country_code"])
+    city.save(city.id, "City", city)
     return jsonify(city.to_dict()), 200
 
 
 @cc_bp.route("/cities", methods=["GET"])
 def get_cities():
     """Retrieve all cities"""
-    cities = City.all()
+    cities = City.all("City")
     if cities is None:
         abort(404, description="No cities found")
-    cities_data = [city.to_dict() for city in cities]
+    cities_data = [city for city in cities]
     if cities_data is None:
         abort(404, description="No cities found")
     return jsonify(cities_data), 200
@@ -62,16 +63,16 @@ def get_cities():
 @cc_bp.route("/cities/<city_id>", methods=["GET"])
 def get_city(city_id):
     """Retrieve details of a specific city"""
-    city = City.get(city_id)
+    city = City.reload(city_id, "City")
     if city is None:
         abort(404, description="City not found")
-    return jsonify(city.to_dict()), 200
+    return jsonify(city), 200
 
 
 @cc_bp.route("/cities/<city_id>", methods=["PUT"])
 def update_city(city_id):
     """Update an existing city"""
-    city = City.get(city_id)
+    city = City.get(city_id, "City")
     if city is None:
         abort(400, description="City not found")
     data = request.json
@@ -81,15 +82,15 @@ def update_city(city_id):
         city.name = data["name"]
     if "country_code" in data:
         city.country_code = data["country_code"]
-    city.update()
+    city.update(city.id, "City", city)
     return jsonify(city.to_dict()), 201
 
 
 @cc_bp.route("/cities/<city_id>", methods=["DELETE"])
 def delete_city(city_id):
     """Celete a city"""
-    city = City.get(city_id)
+    city = City.get(city_id, "City")
     if city is None:
         abort(400, description="City not found")
-    city.delete()
+    city.delete(city.id, "City")
     return "City deleted", 204

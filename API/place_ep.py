@@ -18,52 +18,53 @@ def create_place():
     for field in fields:
         if field not in data:
             abort(400, description=f"Missing {field}")
-    user = User.get(data["host_id"])
+    user = User.get(data["host_id"], "User")
     if user is None:
         abort(404, description="User not found")
-    place = Place.create(data["name"], data["description"], data["address"],
-                         data["city_id"], data["latitude"], data["longitude"],
-                         data["rooms"], data["bathrooms"], data["price"],
-                         data["max_guests"])
+    place = Place(data["name"], data["description"], data["address"],
+                  data["city_id"], data["latitude"], data["longitude"],
+                  data["rooms"], data["bathrooms"], data["price"],
+                  data["max_guests"])
     place.host_id = data["host_id"]
     user.add_place(place)
     place.add_amenity(amenity for amenity in data["amenities"])
+    place.save(place.id, "Place", place)
     return jsonify(place.to_dict()), 201
 
 
 @place_bp.route("/places", methods=["GET"])
 def get_places():
     """Retrieve a list of all places"""
-    places = Place.all()
+    places = Place.all("Place")
     if places is None:
         abort(404, description="Places not found")
-    data = [place.to_dict() for place in places]
+    data = [place for place in places]
     return jsonify(data), 200
 
 
 @place_bp.route("/places/<place_id>", methods=["GET"])
 def get_place(place_id):
     """Retrieve detailed information about a specific place"""
-    place = Place.get(place_id)
+    place = Place.reload(place_id, "place")
     if place is None:
         abort(404, description="Place not found")
-    return jsonify(place.to_dict()), 200
+    return jsonify(place), 200
 
 
 @place_bp.route("/places/<place_id>", methods=["PUT"])
 def update_place(place_id):
     """Update an existing place"""
-    place = Place.get(place_id)
+    place = Place.get(place_id, "Place")
     if place is None:
         abort(404, description="Place not found")
     data = request.json
     if data is None or not data:
         abort(400, description="No data provided (must be JSON)")
     if "host_id" in data:
-        user = User.get(data["host_id"])
+        user = User.get(data["host_id"], "User")
         if user is None:
             abort(404, description="User not found")
-        prev_host = User.get(place.host_id)
+        prev_host = User.get(place.host_id, "User")
         if prev_host is not None:
             prev_host.places.remove(place)
         place.host_id = data["host_id"]
@@ -91,17 +92,17 @@ def update_place(place_id):
         place.price = data["price"]
     if "max_guests" in data:
         place.max_guests = data["max_guests"]
-    place.update()
+    place.save(place.id, "Place", place)
     return jsonify(place.to_dict()), 201
 
 
 @place_bp.route("/places/<place_id>", methods=["DELETE"])
 def delete_place(place_id):
     """Delete a place"""
-    place = Place.get(place_id)
+    place = Place.get(place_id, "Place")
     if place is None:
         abort(404, description="Place not found")
-    host = User.get(place.host_id)
+    host = User.get(place.host_id, "User")
     host.places.remove(place)
-    place.delete()
+    place.delete(place.id, "Place")
     return "Place deleted", 204

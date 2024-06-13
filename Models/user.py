@@ -5,10 +5,9 @@ from .review import Review
 from Persistence.data_manager import DataManager
 
 
-class User:
+class User(DataManager):
     """class that defines a user"""
     emails = []  # list of existing email addresses
-    data_manager = DataManager()
 
     def __init__(self, first_name: str, last_name: str,
                  email: str, password: str):
@@ -114,33 +113,6 @@ class User:
             raise ValueError("password cannot be empty")
         self.__password = password
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
-
-    @classmethod
-    def create(cls, first_name, last_name, email, password):
-        """Create new user"""
-        user = cls(first_name, last_name, email, password)
-        cls.data_manager.save(user.id, "User", user.to_dict())
-        return user
-
-    @classmethod
-    def get(cls, user_id):
-        """Get user by id"""
-        user = cls.data_manager.get(user_id, "User")
-        return (user)
-
-    def update(self):
-        """Update user data"""
-        self.data_manager.update(self.id, "User", self.to_dict())
-
-    def delete(self):
-        """Delete user data"""
-        User.emails.remove(self.__email)
-        self.data_manager.delete(self.id, "User")
-
-    @classmethod
-    def all(cls):
-        """Retrieve all users"""
-        return cls.data_manager.all("User")
 
     def to_dict(self):
         """Convert user to dict"""
