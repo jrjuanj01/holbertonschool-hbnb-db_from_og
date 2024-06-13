@@ -30,7 +30,7 @@ class Place(DataManager):
 
     def add_amenity(self, amenity):
         """adds amenity to place amenities"""
-        if not isinstance(amenity, Amenity):
+        if amenity not in Amenity.amenities:
             raise ValueError("amenity must be an Amenity instance")
         self.amenities.append(amenity)
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
