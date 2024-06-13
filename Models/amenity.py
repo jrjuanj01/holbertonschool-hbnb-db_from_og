@@ -3,10 +3,8 @@ from datetime import datetime
 from Persistence.data_manager import DataManager
 
 
-class Amenity:
+class Amenity(DataManager):
     """class that defines an amenity"""
-    data_manager = DataManager()
-
     def __init__(self, name: str):
         """initialize an amenity"""
         self.__id = str(uuid.uuid4())
@@ -43,31 +41,6 @@ class Amenity:
             raise ValueError("name cannot be empty")
         self.__name = name
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
-
-    @classmethod
-    def create(cls, name):
-        """Create a new amenity"""
-        amenity = cls(name)
-        cls.data_manager.save(amenity.id, "Amenity", amenity.to_dict())
-        return amenity
-
-    @classmethod
-    def get(cls, amenity_id):
-        """Get a specific amenity by ID"""
-        return cls.data_manager.get(amenity_id, "Amenity")
-
-    def update(self):
-        """Update amenity data"""
-        self.data_manager.update(self.id, "Amenity", self.to_dict())
-
-    def delete(self):
-        """Delete amenity"""
-        self.data_manager.delete(self.id, "Amenity")
-
-    @classmethod
-    def all(cls):
-        """retrieve all amenities"""
-        return cls.data_manager.all("Amenity")
 
     def to_dict(self):
         """Return a dictionary representation of an amenity"""

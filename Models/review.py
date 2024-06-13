@@ -102,7 +102,6 @@ class Review:
             "created_at": self.__created_at,
             "updated_at": self.__updated_at,
             "user_id": self.__user_id,
-            "user_name": self.__user_name,
             "place_id": self.__place_id,
             "comment": self.__comment,
             "rating": self.__rating,

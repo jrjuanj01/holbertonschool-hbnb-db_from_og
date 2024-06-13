@@ -3,9 +3,8 @@ from datetime import datetime
 from Persistence.data_manager import DataManager
 
 
-class City:
+class City(DataManager):
     """class that defines a city"""
-    data_manager = DataManager()
 
     def __init__(self, name: str, country_code):
         """initialize a city"""
@@ -55,31 +54,6 @@ class City:
         """country setter"""
         self.__country_code = country_code
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
-
-    @classmethod
-    def create(cls, name, country_code):
-        """Create a new city"""
-        city = cls(name, country_code)
-        cls.data_manager.save(city.id, "City", city.to_dict())
-        return city
-
-    @classmethod
-    def get(cls, city_id):
-        """Get a specific city by ID"""
-        return cls.data_manager.get(city_id, "City")
-
-    def update(self):
-        """Update city data"""
-        self.data_manager.update(self.id, "City", self.to_dict())
-
-    def delete(self):
-        """Delete city"""
-        self.data_manager.delete(self.id, "City")
-
-    @classmethod
-    def all(cls):
-        """Retrieve all cities"""
-        return cls.data_manager.all("City")
 
     def to_dict(self):
         """Return a dictionary representation of a city"""
