@@ -113,6 +113,7 @@ class DataManager():
         if identifier in storage[data_type]:
             storage[data_type][identifier] = object.to_dict()
             objects[identifier] = object
+            save_data(storage)
         else:
             raise ValueError(f"{data_type} '{identifier}' does not exist")
 
