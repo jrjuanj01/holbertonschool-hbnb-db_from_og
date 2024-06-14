@@ -58,8 +58,8 @@ curl -X POST http://localhost:5000/places -H "Content-Type: application/json" -d
   "bathrooms": 2,
   "host_id": "<user_id>",
   "price": 100,
-  "max_guest": 6,
-  "amenities": [Pool]
+  "max_guests": 6,
+  "amenities": ["Pool"]
 }'
 
 curl -X GET http://localhost:5000/places
