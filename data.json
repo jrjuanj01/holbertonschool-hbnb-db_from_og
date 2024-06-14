@@ -1,0 +1,20 @@
+{
+    "User": {
+        "6129aa44-76ff-48c0-b2b0-10aa2efde42c": {
+            "id": "6129aa44-76ff-48c0-b2b0-10aa2efde42c",
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "testuser@example.com",
+            "password": "password123",
+            "created_at": "June/14/2024 03:41:49 PM",
+            "updated_at": "June/14/2024 03:41:49 PM",
+            "places": [],
+            "reviews": []
+        }
+    },
+    "Place": {},
+    "Review": {},
+    "City": {},
+    "Country": {},
+    "Amenity": {}
+}
