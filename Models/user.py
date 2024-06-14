@@ -127,3 +127,25 @@ class User(DataManager):
             "places": [place.to_dict() for place in self.places],
             "reviews": [review.to_dict() for review in self.reviews],
         }
+
+
+@classmethod
+def from_dict(cls, data):
+    """Create a User object from a dictionary."""
+    user = cls(
+        first_name=data['first_name'],
+        last_name=data['last_name'],
+        email=data['email'],
+        password=data['password']
+    )
+    user.__id = data['id']
+    user.__created_at = data['created_at']
+    user.__updated_at = data['updated_at']
+
+    user.places = [Place.from_dict(place_data)
+                   for place_data in data.get('places', [])]
+
+    user.reviews = [Review.from_dict(review_data)
+                    for review_data in data.get('reviews', [])]
+
+    return user
