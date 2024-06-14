@@ -6,9 +6,41 @@ DATA_FILE = "data.json"
 
 def load_data():
     """Load data from data.json file"""
+    from Models.amenity import Amenity
+    from Models.city import City
+    from Models.user import User
+    from Models.place import Place
+    from Models.review import Review
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            loaded_data = json.load(f)
+            storage = {
+                "User": {},
+                "Place": {},
+                "Review": {},
+                "City": {},
+                "Country": {},
+                "Amenity": {}
+            }
+            objects = {}
+
+            for data_type, items in loaded_data.items():
+                for identifier, obj_data in items.items():
+                    if data_type == "User":
+                        obj = User.from_dict(obj_data)
+                    elif data_type == "Place":
+                        obj = Place.from_dict(obj_data)
+                    elif data_type == "Review":
+                        obj = Review.from_dict(obj_data)
+                    elif data_type == "City":
+                        obj = City.from_dict(obj_data)
+                    elif data_type == "Amenity":
+                        obj = Amenity.from_dict(obj_data)
+
+                    storage[data_type][identifier] = obj_data
+                    objects[identifier] = obj
+
+            return storage, objects
     return {
         "User": {},
         "Place": {},
@@ -27,60 +59,59 @@ def save_data(data):
 
 class DataManager():
     """Class to manage all Data and CRUD methods"""
-    storage = load_data()
-    objects = {}
+    storage, objects = load_data()
 
     @classmethod
-    def save(self, identifier, data_type, object):
+    def save(cls, identifier, data_type, object):
         """Save Data to storage"""
-        if data_type not in self.storage:
+        if data_type not in cls.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        self.storage[data_type][identifier] = object.to_dict()
-        self.objects[identifier] = object
-        save_data(self.storage)
+        cls.storage[data_type][identifier] = object.to_dict()
+        cls.objects[identifier] = object
+        save_data(cls.storage)
 
     @classmethod
-    def get(self, identifier, data_type):
+    def get(cls, identifier, data_type):
         """Retrieve Data from storage with given identifier"""
-        if data_type not in self.storage:
+        if data_type not in cls.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        return self.objects[identifier]
+        return cls.objects[identifier]
 
     @classmethod
-    def reload(self, identifier, data_type):
+    def reload(cls, identifier, data_type):
         """Retrieve Data from storage with given identifier"""
-        if data_type not in self.storage:
+        if data_type not in cls.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        if identifier not in self.storage[data_type]:
+        if identifier not in cls.storage[data_type]:
             return None
-        return self.storage[data_type][identifier]
+        return cls.storage[data_type][identifier]
 
     @classmethod
-    def update(self, identifier, data_type, object):
+    def update(cls, identifier, data_type, object):
         """Update data from storage"""
-        if data_type not in self.storage:
+        if data_type not in cls.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        if identifier in self.storage[data_type]:
-            self.storage[data_type][identifier] = object.to_dict()
-            self.objects[identifier] = object
+        if identifier in cls.storage[data_type]:
+            cls.storage[data_type][identifier] = object.to_dict()
+            cls.objects[identifier] = object
         else:
             raise ValueError(f"{data_type} '{identifier}' does not exist")
 
     @classmethod
-    def delete(self, identifier, data_type):
+    def delete(cls, identifier, data_type):
         """Delete Data from storage with identifier"""
-        if data_type not in self.storage:
+        if data_type not in cls.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        if identifier in self.storage[data_type]:
-            del self.storage[data_type][identifier]
-            save_data(self.storage)
-            del self.objects[identifier]
+        if identifier in cls.storage[data_type]:
+            del cls.storage[data_type][identifier]
+            save_data(cls.storage)
+            del cls.objects[identifier]
         else:
             raise ValueError(f"{data_type} '{identifier}' does not exist")
 
     @classmethod
-    def all(self, data_type):
+    def all(cls, data_type):
         """Retrieve all Data of given Data type"""
-        if data_type not in self.storage:
+        if data_type not in cls.storage:
             raise ValueError(f"Unsupported data type: {data_type}")
-        return list(self.storage[data_type].values())
+        return list(cls.storage[data_type].values())

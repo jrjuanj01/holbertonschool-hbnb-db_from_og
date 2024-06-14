@@ -31,7 +31,7 @@ class Place(DataManager):
     def add_amenity(self, amenity):
         """adds amenity to place amenities"""
         if amenity not in Amenity.amenities:
-            raise ValueError("amenity must be an Amenity instance")
+            raise ValueError("Amenity does not exist")
         self.amenities.append(amenity)
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
@@ -230,3 +230,32 @@ class Place(DataManager):
             "amenities": [amenity.to_dict() for amenity in self.amenities],
             "reviews": [review.to_dict() for review in self.reviews],
         }
+
+
+@classmethod
+def from_dict(cls, data):
+    """Create a Place object from a dictionary."""
+    place = cls(
+        name=data['name'],
+        description=data['description'],
+        address=data['address'],
+        latitude=float(data['latitude']),
+        longitude=float(data['longitude']),
+        city_id=data['city_id'],
+        rooms=int(data['rooms']),
+        bathrooms=int(data['bathrooms']),
+        price=int(data['price']),
+        max_guests=int(data['max_guests'])
+    )
+    place.__id = data['id']
+    place.__created_at = data['created_at']
+    place.__updated_at = data['updated_at']
+    place.__host_id = data['host_id']
+
+    place.amenities = [Amenity.from_dict(amenity_data)
+                       for amenity_data in data.get('amenities', [])]
+
+    place.reviews = [Review.from_dict(review_data)
+                     for review_data in data.get('reviews', [])]
+
+    return place
