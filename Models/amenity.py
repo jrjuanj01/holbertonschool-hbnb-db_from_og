@@ -3,12 +3,15 @@ from datetime import datetime
 from Persistence.data_manager import DataManager
 
 
-class Amenity:
+class Amenity(DataManager):
     """class that defines an amenity"""
-    data_manager = DataManager()
+    amenities = []  # list of existing amenities
 
     def __init__(self, name: str):
         """initialize an amenity"""
+        if name in Amenity.amenities:
+            raise ValueError("Amenity already exists")
+        Amenity.amenities.append(name)
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
         self.__updated_at = self.__created_at
@@ -44,31 +47,6 @@ class Amenity:
         self.__name = name
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
-    @classmethod
-    def create(cls, name):
-        """Create a new amenity"""
-        amenity = cls(name)
-        cls.data_manager.save(amenity)
-        return amenity
-
-    @classmethod
-    def get(cls, amenity_id):
-        """Get a specific amenity by ID"""
-        return cls.data_manager.get(amenity_id, "Amenity")
-
-    def update(self):
-        """Update amenity data"""
-        self.data_manager.update(self)
-
-    def delete(self):
-        """Delete amenity"""
-        self.data_manager.delete(self.id, "Amenity")
-
-    @classmethod
-    def all(cls):
-        """retrieve all amenities"""
-        return cls.data_manager.all("Amenity")
-
     def to_dict(self):
         """Return a dictionary representation of an amenity"""
         return {
@@ -77,3 +55,16 @@ class Amenity:
             "updated_at": self.__updated_at,
             "name": self.__name,
         }
+
+
+@classmethod
+def from_dict(cls, data):
+    """Create an Amenity object from a dictionary."""
+    amenity = cls(
+        name=data['name']
+    )
+    amenity.__id = data['id']
+    amenity.__created_at = data['created_at']
+    amenity.__updated_at = data['updated_at']
+
+    return amenity

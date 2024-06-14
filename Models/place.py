@@ -5,10 +5,8 @@ from .review import Review
 from Persistence.data_manager import DataManager
 
 
-class Place:
+class Place(DataManager):
     """class that defines a place"""
-    data_manager = DataManager()
-
     def __init__(self, name: str, description: str, address: str,
                  latitude: float, longitude: float, city_id, rooms: int,
                  bathrooms: int, price: int, max_guests: int):
@@ -32,8 +30,8 @@ class Place:
 
     def add_amenity(self, amenity):
         """adds amenity to place amenities"""
-        if not isinstance(amenity, Amenity):
-            raise ValueError("amenity must be an Amenity instance")
+        if amenity not in Amenity.amenities:
+            raise ValueError("Amenity does not exist")
         self.amenities.append(amenity)
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
@@ -212,39 +210,11 @@ class Place:
         self.__max_guests = max_guests
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
-    @classmethod
-    def create(cls, name, description, address, city_id, latitude, longitude,
-               rooms, bathrooms, price, max_guests):
-        """Create a new place"""
-        place = cls(name, description, address, city_id, latitude, longitude,
-                    rooms, bathrooms, price, max_guests)
-        cls.data_manager.save(place)
-        return place
-
-    @classmethod
-    def get(cls, place_id):
-        """Get a specific place by ID"""
-        return cls.data_manager.get(place_id, "Place")
-
-    def update(self):
-        """Update place data"""
-        self.data_manager.update(self)
-
-    def delete(self):
-        """Delete place"""
-        self.data_manager.delete(self.id, "Place")
-
-    @classmethod
-    def all(cls):
-        """retrieve all places"""
-        return cls.data_manager.all("Place")
-
     def to_dict(self):
         """convert place to dict"""
         return {
             "id": self.__id,
             "host_id": self.__host_id,
-            "host": self.__host,
             "created_at": self.__created_at,
             "updated_at": self.__updated_at,
             "name": self.__name,
@@ -260,3 +230,32 @@ class Place:
             "amenities": [amenity.to_dict() for amenity in self.amenities],
             "reviews": [review.to_dict() for review in self.reviews],
         }
+
+
+@classmethod
+def from_dict(cls, data):
+    """Create a Place object from a dictionary."""
+    place = cls(
+        name=data['name'],
+        description=data['description'],
+        address=data['address'],
+        latitude=float(data['latitude']),
+        longitude=float(data['longitude']),
+        city_id=data['city_id'],
+        rooms=int(data['rooms']),
+        bathrooms=int(data['bathrooms']),
+        price=int(data['price']),
+        max_guests=int(data['max_guests'])
+    )
+    place.__id = data['id']
+    place.__created_at = data['created_at']
+    place.__updated_at = data['updated_at']
+    place.__host_id = data['host_id']
+
+    place.amenities = [Amenity.from_dict(amenity_data)
+                       for amenity_data in data.get('amenities', [])]
+
+    place.reviews = [Review.from_dict(review_data)
+                     for review_data in data.get('reviews', [])]
+
+    return place

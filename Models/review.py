@@ -74,7 +74,7 @@ class Review:
     def create(cls, user_id, place_id, rating, comment):
         """create new review"""
         review = cls(user_id, place_id, rating, comment)
-        cls.data_manager.save(review)
+        cls.data_manager.save(review.id, "Review", review.to_dict())
         return review
 
     @classmethod
@@ -84,7 +84,7 @@ class Review:
 
     def update(self):
         """update review data"""
-        self.data_manager.update(self)
+        self.data_manager.update(self.id, "Review", self.to_dict())
 
     def delete(self):
         """delete review data"""
@@ -102,8 +102,23 @@ class Review:
             "created_at": self.__created_at,
             "updated_at": self.__updated_at,
             "user_id": self.__user_id,
-            "user_name": self.__user_name,
             "place_id": self.__place_id,
             "comment": self.__comment,
             "rating": self.__rating,
         }
+
+
+@classmethod
+def from_dict(cls, data):
+    """Create a Review object from a dictionary."""
+    review = cls(
+        user_id=data['user_id'],
+        place_id=data['place_id'],
+        comment=data['comment'],
+        rating=int(data['rating'])
+    )
+    review.__id = data['id']
+    review.__created_at = data['created_at']
+    review.__updated_at = data['updated_at']
+
+    return review
