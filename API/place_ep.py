@@ -26,8 +26,12 @@ def create_place():
                   data["rooms"], data["bathrooms"], data["price"],
                   data["max_guests"])
     place.host_id = data["host_id"]
+    for amenity in data["amenities"]:
+        try:
+            place.add_amenity(amenity)
+        except ValueError:
+            abort(404, description="Amenity not found")
     user.add_place(place)
-    place.add_amenity(amenity for amenity in data["amenities"])
     place.save(place.id, "Place", place)
     return jsonify(place.to_dict()), 201
 
