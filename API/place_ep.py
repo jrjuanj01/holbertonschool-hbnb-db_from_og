@@ -64,15 +64,15 @@ def update_place(place_id):
     data = request.json
     if data is None or not data:
         abort(400, description="No data provided (must be JSON)")
-    # if "host_id" in data:
-    #     user = User.get(data["host_id"], "User")
-    #     if user is None:
-    #         abort(404, description="User not found")
-    #     prev_host = User.get(place.host_id, "User")
-    #     if prev_host is not None and prev_host != user:
-    #         prev_host.places.remove(place)
-    #     place.host_id = data["host_id"]
-    #     user.add_place(place)
+    if "host_id" in data:
+        user = User.get(data["host_id"], "User")
+        if user is None:
+            abort(404, description="User not found")
+        prev_host = User.get(place.host_id, "User")
+        if prev_host is not None and prev_host != user:
+            prev_host.places.remove(place.id)
+        place.host_id = data["host_id"]
+        user.add_place(place.id)
     if "amenities" in data:
         place.amenities.clear()
         place.add_amenity(amenity for amenity in data["amenities"])
@@ -107,6 +107,6 @@ def delete_place(place_id):
     if place is None:
         abort(404, description="Place not found")
     host = User.get(place.host_id, "User")
-    host.places.remove(place)
+    host.places.remove(place.id)
     place.delete(place.id, "Place")
     return "Place deleted", 204
