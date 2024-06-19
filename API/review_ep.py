@@ -52,9 +52,8 @@ def update_review(review_id):
     rating = request.json["rating"]
     review["comment"] = comment
     review["rating"] = rating
-    review.update(review_id, "Review", review)
+    review.save(review_id, "Review", review)
     return jsonify(review.to_dict()), 201
-
 
 @review_bp.route("/reviews/<review_id>", methods=["DELETE"])
 def delete_review(review_id):
