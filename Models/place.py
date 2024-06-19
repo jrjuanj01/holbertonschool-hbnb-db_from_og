@@ -254,7 +254,6 @@ class Place(DataManager):
 
         place.amenities = [amenity_data for amenity_data in data.get('amenities', [])]
 
-        place.reviews = [Review.from_dict(review_data)
-                        for review_data in data.get('reviews', [])]
+        place.reviews = [review_data for review_data in data.get('reviews', [])]
 
         return place
