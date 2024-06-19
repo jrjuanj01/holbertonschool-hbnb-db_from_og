@@ -53,6 +53,7 @@ class Review(DataManager):
             raise TypeError("comment must be a valid string")
         if not comment or len(comment.strip()) == 0:
             raise ValueError("comment cannot be empty")
+        self.__comment = comment
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     @property
@@ -67,6 +68,7 @@ class Review(DataManager):
             raise TypeError("rating must be an integer")
         if rating < 1 or rating > 5:
             raise ValueError("rating must be between 1 and 5")
+        self.__rating = rating
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
     def to_dict(self):
