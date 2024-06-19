@@ -50,8 +50,8 @@ def update_review(review_id):
         abort(404, description="Review not found")
     comment = request.json["comment"]
     rating = request.json["rating"]
-    review.comment = comment
-    review.rating = rating
+    review["comment"] = comment
+    review["rating"] = rating
     review.update(review.id, "Review", review)
     return jsonify(review.to_dict()), 201
 
