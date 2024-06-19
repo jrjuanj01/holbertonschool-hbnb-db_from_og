@@ -37,8 +37,8 @@ class Place(DataManager):
 
     def add_review(self, review):
         """adds review to place reviews"""
-        if not isinstance(review, Review):
-            raise ValueError("review must be a Review instance")
+        #if not isinstance(review, Review):
+        #    raise ValueError("review must be a Review instance")
         self.reviews.append(review)
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 
