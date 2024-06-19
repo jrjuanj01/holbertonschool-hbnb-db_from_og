@@ -41,7 +41,6 @@ def load_objects():
                 loaded_data = json.load(f)
                 for data_type, items in loaded_data.items():
                     for item, obj_data in items.items():
-                        print(data_type)
                         if data_type == "User":
                             from Models.user import User
                             obj = User.from_dict(obj_data)
