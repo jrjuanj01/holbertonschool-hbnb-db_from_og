@@ -114,7 +114,7 @@ class Review(DataManager):
             user_id=data['user_id'],
             place_id=data['place_id'],
             comment=data['comment'],
-            rating=int(data['rating'])
+            rating=data['rating']
         )
         review.__id = data['id']
         review.__created_at = data['created_at']
