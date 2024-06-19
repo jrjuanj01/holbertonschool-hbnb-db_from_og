@@ -45,13 +45,13 @@ def get_review(review_id):
 @review_bp.route("/reviews/<review_id>", methods=["PUT"])
 def update_review(review_id):
     """Update an existing review"""
-    review = Review.reload(review_id, "Review")
+    review = Review.get(review_id, "Review")
     if review is None:
         abort(404, description="Review not found")
     comment = request.json["comment"]
     rating = request.json["rating"]
-    review["comment"] = comment
-    review["rating"] = rating
+    review.comment = comment
+    review.rating = rating
     review.save(review_id, "Review", review)
     return jsonify(review.to_dict()), 201
 
