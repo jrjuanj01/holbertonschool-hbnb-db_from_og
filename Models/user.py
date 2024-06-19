@@ -124,8 +124,8 @@ class User(DataManager):
             "password": self.__password,
             "created_at": self.__created_at,
             "updated_at": self.__updated_at,
-            "places": [place.to_dict() for place in self.places],
-            "reviews": [review.to_dict() for review in self.reviews],
+            "places": [place for place in self.places],
+            "reviews": [review for review in self.reviews],
         }
     @classmethod
     def from_dict(cls, data):
