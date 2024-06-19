@@ -45,7 +45,7 @@ def get_review(review_id):
 @review_bp.route("/reviews/<review_id>", methods=["PUT"])
 def update_review(review_id):
     """Update an existing review"""
-    review = Review.get(review_id, "Place")
+    review = Review.get(review_id, "Review")
     if review is None:
         abort(404, description="Review not found")
     comment = request.json["comment"]
