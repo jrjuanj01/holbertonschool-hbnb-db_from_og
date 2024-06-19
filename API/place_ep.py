@@ -69,7 +69,7 @@ def update_place(place_id):
         if user is None:
             abort(404, description="User not found")
         prev_host = User.get(place.host_id, "User")
-        if prev_host is not None and user is not prev_host:
+        if prev_host is not None and prev_host != user:
             prev_host.places.remove(place)
         place.host_id = data["host_id"]
         user.add_place(place)
