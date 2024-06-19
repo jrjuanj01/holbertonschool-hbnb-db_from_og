@@ -9,8 +9,8 @@ class Amenity(DataManager):
 
     def __init__(self, name: str):
         """initialize an amenity"""
-        if name in Amenity.amenities:
-            raise ValueError("Amenity already exists")
+        #if name in Amenity.amenities:
+         #   raise ValueError("Amenity already exists")
         Amenity.amenities.append(name)
         self.__id = str(uuid.uuid4())
         self.__created_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
