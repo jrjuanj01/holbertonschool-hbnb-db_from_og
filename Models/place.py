@@ -252,8 +252,7 @@ class Place(DataManager):
         place.__updated_at = data['updated_at']
         place.__host_id = data['host_id']
 
-        place.amenities = [Amenity.from_dict(amenity_data)
-                        for amenity_data in data.get('amenities', [])]
+        place.amenities = [amenity_data for amenity_data in data.get('amenities', [])]
 
         place.reviews = [Review.from_dict(review_data)
                         for review_data in data.get('reviews', [])]

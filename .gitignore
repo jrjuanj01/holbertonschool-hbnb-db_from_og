@@ -11,3 +11,4 @@ Models/__pycache__/country.cpython-311.pyc
 Models/__pycache__/place.cpython-311.pyc
 Models/__pycache__/review.cpython-311.pyc
 Models/__pycache__/user.cpython-311.pyc
+data.json
