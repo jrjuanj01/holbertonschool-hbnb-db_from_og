@@ -49,7 +49,7 @@ def get_places():
 @place_bp.route("/places/<place_id>", methods=["GET"])
 def get_place(place_id):
     """Retrieve detailed information about a specific place"""
-    place = Place.reload(place_id, "place")
+    place = Place.reload(place_id, "Place")
     if place is None:
         abort(404, description="Place not found")
     return jsonify(place), 200
