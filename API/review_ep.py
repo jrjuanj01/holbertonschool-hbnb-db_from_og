@@ -26,7 +26,7 @@ def create_review(place_id):
     if user.id == place.host_id:
         abort(400, description="Host user cannot review their own place")
     review = Review(data["user_id"], place_id,
-                    data["rating"], data["comment"])
+                    data["comment"], data["rating"])
     place.add_review(review)
     user.add_review(review)
     review.save(review.id, "Review", review)
