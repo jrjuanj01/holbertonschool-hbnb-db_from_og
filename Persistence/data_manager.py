@@ -9,6 +9,7 @@ def load_storage():
     
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
+            #handle empty data.json
             loaded_data = json.load(f)
             storage = {
                 "User": {},
@@ -40,7 +41,7 @@ def load_objects():
                 loaded_data = json.load(f)
                 for data_type, items in loaded_data.items():
                     for item, obj_data in items.items():
-                        
+                        print(data_type)
                         if data_type == "User":
                             from Models.user import User
                             obj = User.from_dict(obj_data)
