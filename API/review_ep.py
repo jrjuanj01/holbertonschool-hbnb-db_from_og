@@ -76,7 +76,7 @@ def get_place_reviews(place_id):
         abort(404, description="Place not found")
     if place.reviews is None:
         abort(404, description="Place has no reviews")
-    place_reviews = [review.to_dict() for review in place.reviews]
+    place_reviews = [review for review in place.reviews]
     return jsonify(place_reviews), 200
 
 
@@ -88,5 +88,5 @@ def get_user_reviews(user_id):
         abort(404, description="User not found")
     if user.reviews is None:
         abort(404, description="User has no reviews")
-    user_reviews = [review.to_dict() for review in user.reviews]
+    user_reviews = [review for review in user.reviews]
     return jsonify(user_reviews), 200
