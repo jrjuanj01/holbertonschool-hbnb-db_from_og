@@ -57,14 +57,14 @@ class Amenity(DataManager):
         }
 
 
-@classmethod
-def from_dict(cls, data):
-    """Create an Amenity object from a dictionary."""
-    amenity = cls(
-        name=data['name']
-    )
-    amenity.__id = data['id']
-    amenity.__created_at = data['created_at']
-    amenity.__updated_at = data['updated_at']
+    @classmethod
+    def from_dict(cls, data):
+        """Create an Amenity object from a dictionary."""
+        amenity = cls(
+            name=data['name']
+        )
+        amenity.__id = data['id']
+        amenity.__created_at = data['created_at']
+        amenity.__updated_at = data['updated_at']
 
-    return amenity
+        return amenity
