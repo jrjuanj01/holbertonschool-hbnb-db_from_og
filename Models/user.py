@@ -140,10 +140,8 @@ class User(DataManager):
         user.__created_at = data['created_at']
         user.__updated_at = data['updated_at']
 
-        user.places = [Place.from_dict(place_data)
-                        for place_data in data.get('places', [])]
+        user.places = [place_data for place_data in data.get('places', [])]
 
-        user.reviews = [Review.from_dict(review_data)
-                        for review_data in data.get('reviews', [])]
+        user.reviews = [review_data for review_data in data.get('reviews', [])]
 
         return user
