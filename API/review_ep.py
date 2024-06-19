@@ -27,8 +27,10 @@ def create_review(place_id):
         abort(400, description="Host user cannot review their own place")
     review = Review(data["user_id"], place_id,
                     data["comment"], data["rating"])
-    place.add_review(review)
-    user.add_review(review)
+    place.add_review(review.id)
+    user.add_review(review.id)
+    place.save(place_id, "Place", place)
+    user.save(user.id, "User", user)
     review.save(review.id, "Review", review)
     return jsonify(review.to_dict()), 201
 
