@@ -33,7 +33,7 @@ def create_review(place_id):
     return jsonify(review.to_dict()), 201
 
 
-@review_bp.route("/review/<review_id>", methods=["GET"])
+@review_bp.route("/reviews/<review_id>", methods=["GET"])
 def get_review(review_id):
     """Retrieve detailed information about a specific review"""
     review = Review.reload(review_id, "Review")
@@ -42,7 +42,7 @@ def get_review(review_id):
     return jsonify(review), 200
 
 
-@review_bp.route("/review/<review_id>", methods=["PUT"])
+@review_bp.route("/reviews/<review_id>", methods=["PUT"])
 def update_review(review_id):
     """Update an existing review"""
     review = Review.get(review_id, "Place")
@@ -56,7 +56,7 @@ def update_review(review_id):
     return jsonify(review.to_dict()), 201
 
 
-@review_bp.route("/review/<review_id>", methods=["DELETE"])
+@review_bp.route("/reviews/<review_id>", methods=["DELETE"])
 def delete_review(review_id):
     """Delete a review"""
     review = Review.get(review_id, "Review")
