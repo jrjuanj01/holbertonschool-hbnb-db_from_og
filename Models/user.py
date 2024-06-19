@@ -27,8 +27,8 @@ class User(DataManager):
 
     def add_place(self, place):
         """Add place to list of user places"""
-        if not isinstance(place, Place):
-            raise ValueError("place must be a Place instance")
+        #if not isinstance(place, Place):
+        #    raise ValueError("place must be a Place instance")
         self.places.append(place)
         self.__updated_at = datetime.now().strftime("%B/%d/%Y %I:%M:%S %p")
 

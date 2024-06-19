@@ -31,7 +31,7 @@ def create_place():
             place.add_amenity(amenity)
         except ValueError:
             abort(404, description="Amenity not found")
-    user.add_place(place)
+    user.add_place(place.id)
     place.save(place.id, "Place", place)
     return jsonify(place.to_dict()), 201
 
