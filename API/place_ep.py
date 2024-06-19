@@ -107,7 +107,7 @@ def delete_place(place_id):
     if place is None:
         abort(404, description="Place not found")
     host = Place.get(place.host_id, "User")
-    print(host.places)
-    host.places.remove(place_id)
+    # print(host.places)
+    # host.places.remove(place_id)
     place.delete(place_id, "Place")
     return "Place deleted", 204
