@@ -3,9 +3,8 @@ from datetime import datetime
 from Persistence.data_manager import DataManager
 
 
-class Review:
+class Review(DataManager):
     """class that defines a review"""
-    data_manager = DataManager()
 
     def __init__(self, user_id: str, place_id, comment: str, rating: int):
         """initialize a review"""
