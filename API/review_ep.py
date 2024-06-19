@@ -48,10 +48,11 @@ def update_review(review_id):
     review = Review.get(review_id, "Review")
     if review is None:
         abort(404, description="Review not found")
-    comment = request.json["comment"]
-    rating = request.json["rating"]
-    review.comment = comment
-    review.rating = rating
+    data = request.json
+    if data is None or not data:
+        abort(400, description="No data provided (must be JSON)")
+    review.comment = data["comment"]
+    review.rating = data["rating"]
     review.save(review_id, "Review", review)
     return jsonify(review.to_dict()), 201
 
