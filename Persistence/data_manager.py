@@ -62,8 +62,6 @@ def load_objects():
     return objects
     
     
-
-
 def save_data(data):
     """Save data to data.json file"""
     with open(DATA_FILE, "w", encoding="utf-8") as f:
